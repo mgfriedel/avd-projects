@@ -17,18 +17,18 @@
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
-| FABRIC | l2leaf | dc1-leaf1-host | 172.16.1.151/24 | vEOS-lab | Provisioned | - |
+| FABRIC | l2leaf | dc1-leaf1-l2sw | 172.16.1.151/24 | vEOS-lab | Provisioned | - |
 | FABRIC | l3leaf | dc1-leaf1a | 172.16.1.101/24 | vEOS-lab | Provisioned | - |
 | FABRIC | l3leaf | dc1-leaf1b | 172.16.1.102/24 | vEOS-lab | Provisioned | - |
-| FABRIC | l2leaf | dc1-leaf2-host | 172.16.1.152/24 | vEOS-lab | Provisioned | - |
+| FABRIC | l2leaf | dc1-leaf2-l2sw | 172.16.1.152/24 | vEOS-lab | Provisioned | - |
 | FABRIC | l3leaf | dc1-leaf2a | 172.16.1.103/24 | vEOS-lab | Provisioned | - |
 | FABRIC | l3leaf | dc1-leaf2b | 172.16.1.104/24 | vEOS-lab | Provisioned | - |
 | FABRIC | spine | dc1-spine1 | 172.16.1.11/24 | vEOS-lab | Provisioned | - |
 | FABRIC | spine | dc1-spine2 | 172.16.1.12/24 | vEOS-lab | Provisioned | - |
-| FABRIC | l2leaf | dc2-leaf1-host | 172.16.1.161/24 | vEOS-lab | Provisioned | - |
+| FABRIC | l2leaf | dc2-leaf1-l2sw | 172.16.1.161/24 | vEOS-lab | Provisioned | - |
 | FABRIC | l3leaf | dc2-leaf1a | 172.16.1.111/24 | vEOS-lab | Provisioned | - |
 | FABRIC | l3leaf | dc2-leaf1b | 172.16.1.112/24 | vEOS-lab | Provisioned | - |
-| FABRIC | l2leaf | dc2-leaf2-host | 172.16.1.162/24 | vEOS-lab | Provisioned | - |
+| FABRIC | l2leaf | dc2-leaf2-l2sw | 172.16.1.162/24 | vEOS-lab | Provisioned | - |
 | FABRIC | l3leaf | dc2-leaf2a | 172.16.1.113/24 | vEOS-lab | Provisioned | - |
 | FABRIC | l3leaf | dc2-leaf2b | 172.16.1.114/24 | vEOS-lab | Provisioned | - |
 | FABRIC | spine | dc2-spine1 | 172.16.1.21/24 | vEOS-lab | Provisioned | - |
@@ -45,16 +45,16 @@
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
-| l2leaf | dc1-leaf1-host | Ethernet1 | l3leaf | dc1-leaf1a | Ethernet8 |
-| l2leaf | dc1-leaf1-host | Ethernet2 | l3leaf | dc1-leaf1b | Ethernet8 |
+| l2leaf | dc1-leaf1-l2sw | Ethernet1 | l3leaf | dc1-leaf1a | Ethernet8 |
+| l2leaf | dc1-leaf1-l2sw | Ethernet2 | l3leaf | dc1-leaf1b | Ethernet8 |
 | l3leaf | dc1-leaf1a | Ethernet1 | spine | dc1-spine1 | Ethernet1 |
 | l3leaf | dc1-leaf1a | Ethernet2 | spine | dc1-spine2 | Ethernet1 |
 | l3leaf | dc1-leaf1a | Ethernet3 | mlag_peer | dc1-leaf1b | Ethernet3 |
 | l3leaf | dc1-leaf1a | Ethernet4 | mlag_peer | dc1-leaf1b | Ethernet4 |
 | l3leaf | dc1-leaf1b | Ethernet1 | spine | dc1-spine1 | Ethernet2 |
 | l3leaf | dc1-leaf1b | Ethernet2 | spine | dc1-spine2 | Ethernet2 |
-| l2leaf | dc1-leaf2-host | Ethernet1 | l3leaf | dc1-leaf2a | Ethernet8 |
-| l2leaf | dc1-leaf2-host | Ethernet2 | l3leaf | dc1-leaf2b | Ethernet8 |
+| l2leaf | dc1-leaf2-l2sw | Ethernet1 | l3leaf | dc1-leaf2a | Ethernet8 |
+| l2leaf | dc1-leaf2-l2sw | Ethernet2 | l3leaf | dc1-leaf2b | Ethernet8 |
 | l3leaf | dc1-leaf2a | Ethernet1 | spine | dc1-spine1 | Ethernet3 |
 | l3leaf | dc1-leaf2a | Ethernet2 | spine | dc1-spine2 | Ethernet3 |
 | l3leaf | dc1-leaf2a | Ethernet3 | mlag_peer | dc1-leaf2b | Ethernet3 |
@@ -63,16 +63,16 @@
 | l3leaf | dc1-leaf2b | Ethernet1 | spine | dc1-spine1 | Ethernet4 |
 | l3leaf | dc1-leaf2b | Ethernet2 | spine | dc1-spine2 | Ethernet4 |
 | l3leaf | dc1-leaf2b | Ethernet6 | l3leaf | dc2-leaf2b | Ethernet6 |
-| l2leaf | dc2-leaf1-host | Ethernet1 | l3leaf | dc2-leaf1a | Ethernet8 |
-| l2leaf | dc2-leaf1-host | Ethernet2 | l3leaf | dc2-leaf1b | Ethernet8 |
+| l2leaf | dc2-leaf1-l2sw | Ethernet1 | l3leaf | dc2-leaf1a | Ethernet8 |
+| l2leaf | dc2-leaf1-l2sw | Ethernet2 | l3leaf | dc2-leaf1b | Ethernet8 |
 | l3leaf | dc2-leaf1a | Ethernet1 | spine | dc2-spine1 | Ethernet1 |
 | l3leaf | dc2-leaf1a | Ethernet2 | spine | dc2-spine2 | Ethernet1 |
 | l3leaf | dc2-leaf1a | Ethernet3 | mlag_peer | dc2-leaf1b | Ethernet3 |
 | l3leaf | dc2-leaf1a | Ethernet4 | mlag_peer | dc2-leaf1b | Ethernet4 |
 | l3leaf | dc2-leaf1b | Ethernet1 | spine | dc2-spine1 | Ethernet2 |
 | l3leaf | dc2-leaf1b | Ethernet2 | spine | dc2-spine2 | Ethernet2 |
-| l2leaf | dc2-leaf2-host | Ethernet1 | l3leaf | dc2-leaf2a | Ethernet8 |
-| l2leaf | dc2-leaf2-host | Ethernet2 | l3leaf | dc2-leaf2b | Ethernet8 |
+| l2leaf | dc2-leaf2-l2sw | Ethernet1 | l3leaf | dc2-leaf2a | Ethernet8 |
+| l2leaf | dc2-leaf2-l2sw | Ethernet2 | l3leaf | dc2-leaf2b | Ethernet8 |
 | l3leaf | dc2-leaf2a | Ethernet1 | spine | dc2-spine1 | Ethernet3 |
 | l3leaf | dc2-leaf2a | Ethernet2 | spine | dc2-spine2 | Ethernet3 |
 | l3leaf | dc2-leaf2a | Ethernet3 | mlag_peer | dc2-leaf2b | Ethernet3 |

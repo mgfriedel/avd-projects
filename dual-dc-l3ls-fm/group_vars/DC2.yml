@@ -120,7 +120,7 @@ l2leaf:
     - group: DC2_L2_LEAF1
       uplink_switches: ['dc2-leaf1a', 'dc2-leaf1b']
       nodes:
-        - name: dc2-leaf1-host
+        - name: dc2-leaf1-l2sw
           id: 11
           mgmt_ip: 172.16.1.161/24
           uplink_switch_interfaces:
@@ -130,7 +130,7 @@ l2leaf:
     - group: DC2_L2_LEAF2
       uplink_switches: ['dc2-leaf2a', 'dc2-leaf2b']
       nodes:
-        - name: dc2-leaf2-host
+        - name: dc2-leaf2-l2sw
           id: 12
           mgmt_ip: 172.16.1.162/24
           uplink_switch_interfaces:

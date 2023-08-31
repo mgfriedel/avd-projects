@@ -13,6 +13,8 @@ vrf instance MGMT
 ! Defines the settings for the Management1 interface through which Ansible reaches the device
 interface Management1
    description oob_management
+   no lldp receive
+   no lldp transmit
    no shutdown
    vrf MGMT
    ! IP address - must be set uniquely per device

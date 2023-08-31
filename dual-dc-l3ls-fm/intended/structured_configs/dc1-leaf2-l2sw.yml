@@ -1,4 +1,4 @@
-hostname: dc1-leaf2-host
+hostname: dc1-leaf2-l2sw
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

@@ -1,4 +1,4 @@
-# dc2-leaf1-host
+# dc2-leaf1-l2sw
 
 ## Table of Contents
 

@@ -252,7 +252,7 @@ vlan 4094
 | Ethernet3 | MLAG_PEER_dc2-leaf2b_Ethernet3 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
 | Ethernet4 | MLAG_PEER_dc2-leaf2b_Ethernet4 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
 | Ethernet5 | dc2-leaf2-server1_PCI1 | *trunk | *11-12,21-22 | *4092 | *- | 5 |
-| Ethernet8 | DC2-LEAF2-HOST_Ethernet1 | *trunk | *11-12,21-22,3401-3402 | *- | *- | 8 |
+| Ethernet8 | DC2-LEAF2-L2SW_Ethernet1 | *trunk | *11-12,21-22,3401-3402 | *- | *- | 8 |
 
 *Inherited from Port-Channel Interface
 
@@ -305,7 +305,7 @@ interface Ethernet6
    ip address 172.100.100.1/31
 !
 interface Ethernet8
-   description DC2-LEAF2-HOST_Ethernet1
+   description DC2-LEAF2-L2SW_Ethernet1
    no shutdown
    channel-group 8 mode active
 ```
@@ -320,7 +320,7 @@ interface Ethernet8
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | MLAG_PEER_dc2-leaf2b_Po3 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 | Port-Channel5 | dc2-leaf2-server1_PortChannel dc2-leaf2-server1 | switched | trunk | 11-12,21-22 | 4092 | - | - | - | 5 | - |
-| Port-Channel8 | DC2-LEAF2-HOST_Po1 | switched | trunk | 11-12,21-22,3401-3402 | - | - | - | - | 8 | - |
+| Port-Channel8 | DC2-LEAF2-L2SW_Po1 | switched | trunk | 11-12,21-22,3401-3402 | - | - | - | - | 8 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -345,7 +345,7 @@ interface Port-Channel5
    spanning-tree portfast
 !
 interface Port-Channel8
-   description DC2-LEAF2-HOST_Po1
+   description DC2-LEAF2-L2SW_Po1
    no shutdown
    switchport
    switchport trunk allowed vlan 11-12,21-22,3401-3402

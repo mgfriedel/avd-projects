@@ -93,16 +93,16 @@ The drawing below shows the physical topology used in this example. The interfac
 | dc1-leaf1b                                          | 172.16.1.102                |
 | dc1-leaf2a                                          | 172.16.1.103                |
 | dc1-leaf2b                                          | 172.16.1.104                |
-| dc1-leaf1-host                                      | 172.16.1.151                |
-| dc1-leaf2-host                                      | 172.16.1.152                |
+| dc1-leaf1-l2sw                                      | 172.16.1.151                |
+| dc1-leaf2-l2sw                                      | 172.16.1.152                |
 | dc2-spine1                                          | 172.16.1.21                 |
 | dc2-spine2                                          | 172.16.1.22                 |
 | dc2-leaf1a                                          | 172.16.1.111                |
 | dc2-leaf1b                                          | 172.16.1.112                |
 | dc2-leaf2a                                          | 172.16.1.113                |
 | dc2-leaf2b                                          | 172.16.1.114                |
-| dc2-leaf1-host                                      | 172.16.1.161                |
-| dc2-leaf2-host                                      | 172.16.1.162                |
+| dc2-leaf1-l2sw                                      | 172.16.1.161                |
+| dc2-leaf2-l2sw                                      | 172.16.1.162                |
 | **Point-to-point links between leaf and spine**     | **(Underlay)**              |
 | DC1                                                 | 10.255.255.0/26             |
 | DC2                                                 | 10.255.255.64/26            |

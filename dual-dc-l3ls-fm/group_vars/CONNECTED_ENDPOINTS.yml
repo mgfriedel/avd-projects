@@ -30,7 +30,7 @@ servers:
 
       - endpoint_ports: [ iLO ]
         switch_ports: [ Ethernet5 ]
-        switches: [ dc1-leaf1-host ]
+        switches: [ dc1-leaf1-l2sw ]
         vlans: 11
         mode: access
         spanning_tree_portfast: edge
@@ -50,7 +50,7 @@ servers:
 
       - endpoint_ports: [ iLO ]
         switch_ports: [ Ethernet5 ]
-        switches: [ dc1-leaf2-host ]
+        switches: [ dc1-leaf2-l2sw ]
         vlans: 11
         mode: access
         spanning_tree_portfast: edge
@@ -85,7 +85,7 @@ servers:
 
       - endpoint_ports: [ iLO ]
         switch_ports: [ Ethernet5 ]
-        switches: [ dc2-leaf1-host ]
+        switches: [ dc2-leaf1-l2sw ]
         vlans: 11
         mode: access
         spanning_tree_portfast: edge
@@ -105,7 +105,7 @@ servers:
 
       - endpoint_ports: [ iLO ]
         switch_ports: [ Ethernet5 ]
-        switches: [ dc2-leaf2-host ]
+        switches: [ dc2-leaf2-l2sw ]
         vlans: 11
         mode: access
         spanning_tree_portfast: edge

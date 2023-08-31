@@ -358,7 +358,7 @@ port_channel_interfaces:
   - LEAF_PEER_L3
   - MLAG
 - name: Port-Channel8
-  description: DC2-LEAF2-HOST_Po1
+  description: DC2-LEAF2-L2SW_Po1
   type: switched
   shutdown: false
   mode: trunk
@@ -413,10 +413,10 @@ ethernet_interfaces:
   type: routed
   ip_address: 10.255.255.115/31
 - name: Ethernet8
-  peer: dc2-leaf2-host
+  peer: dc2-leaf2-l2sw
   peer_interface: Ethernet1
   peer_type: l2leaf
-  description: DC2-LEAF2-HOST_Ethernet1
+  description: DC2-LEAF2-L2SW_Ethernet1
   shutdown: false
   type: port-channel-member
   channel_group:
