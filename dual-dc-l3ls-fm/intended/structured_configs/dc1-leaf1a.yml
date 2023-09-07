@@ -292,10 +292,10 @@ vlans:
   trunk_groups:
   - MLAG
 - id: 201
-  name: HA1-201
+  name: HA1_201
   tenant: HA
 - id: 202
-  name: HA1-202
+  name: HA1_202
   tenant: HA
 - id: 3019
   name: MLAG_iBGP_HA1
@@ -303,10 +303,10 @@ vlans:
   - LEAF_PEER_L3
   tenant: HA
 - id: 211
-  name: HA2-211
+  name: HA2_211
   tenant: HA
 - id: 212
-  name: HA2-212
+  name: HA2_212
   tenant: HA
 - id: 3020
   name: MLAG_iBGP_HA2
@@ -320,10 +320,10 @@ vlans:
   name: L2_VLAN3402
   tenant: HA
 - id: 101
-  name: Prod1-101
+  name: Prod1_101
   tenant: Prod
 - id: 102
-  name: Prod1-102
+  name: Prod1_102
   tenant: Prod
 - id: 3009
   name: MLAG_iBGP_Prod1
@@ -331,10 +331,10 @@ vlans:
   - LEAF_PEER_L3
   tenant: Prod
 - id: 111
-  name: Prod2-111
+  name: Prod2_111
   tenant: Prod
 - id: 112
-  name: Prod2-112
+  name: Prod2_112
   tenant: Prod
 - id: 3010
   name: MLAG_iBGP_Prod2
@@ -355,13 +355,13 @@ vlan_interfaces:
   mtu: 1500
 - name: Vlan201
   tenant: HA
-  description: HA1-201
+  description: HA1_201
   shutdown: false
   ip_address_virtual: 10.0.101.1/24
   vrf: HA1
 - name: Vlan202
   tenant: HA
-  description: HA1-202
+  description: HA1_202
   shutdown: false
   ip_address_virtual: 10.0.102.1/24
   vrf: HA1
@@ -375,13 +375,13 @@ vlan_interfaces:
   ip_address: 10.255.1.96/31
 - name: Vlan211
   tenant: HA
-  description: HA2-211
+  description: HA2_211
   shutdown: false
   ip_address_virtual: 10.0.111.1/24
   vrf: HA2
 - name: Vlan212
   tenant: HA
-  description: HA2-212
+  description: HA2_212
   shutdown: false
   ip_address_virtual: 10.0.112.1/24
   vrf: HA2
@@ -395,13 +395,13 @@ vlan_interfaces:
   ip_address: 10.255.1.96/31
 - name: Vlan101
   tenant: Prod
-  description: Prod1-101
+  description: Prod1_101
   shutdown: false
   ip_address_virtual: 10.0.101.1/24
   vrf: Prod1
 - name: Vlan102
   tenant: Prod
-  description: Prod1-102
+  description: Prod1_102
   shutdown: false
   ip_address_virtual: 10.0.102.1/24
   vrf: Prod1
@@ -415,13 +415,13 @@ vlan_interfaces:
   ip_address: 10.255.1.96/31
 - name: Vlan111
   tenant: Prod
-  description: Prod2-111
+  description: Prod2_111
   shutdown: false
   ip_address_virtual: 10.0.111.1/24
   vrf: Prod2
 - name: Vlan112
   tenant: Prod
-  description: Prod2-112
+  description: Prod2_112
   shutdown: false
   ip_address_virtual: 10.0.112.1/24
   vrf: Prod2
@@ -454,7 +454,7 @@ port_channel_interfaces:
   type: switched
   shutdown: false
   mode: trunk
-  vlans: 11-12,21-22
+  vlans: 101,102,111,112,201,202,211,212
   native_vlan: 4092
   spanning_tree_portfast: edge
   mlag: 5

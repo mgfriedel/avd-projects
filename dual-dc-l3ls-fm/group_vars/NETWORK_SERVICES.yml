@@ -23,12 +23,12 @@ tenants:
           # SVI definitions.
           - id: 101
             # SVI Description
-            name: Prod1-101
+            name: Prod1_101
             enabled: true
             # IP anycast gateway to be used in the SVI in every leaf.
             ip_address_virtual: 10.0.101.1/24
           - id: 102
-            name: Prod1-102
+            name: Prod1_102
             enabled: true
             ip_address_virtual: 10.0.102.1/24
       - name: Prod2
@@ -38,11 +38,11 @@ tenants:
           loopback_ip_range: 10.255.13.0/27
         svis:
           - id: 111
-            name: Prod2-111
+            name: Prod2_111
             enabled: true
             ip_address_virtual: 10.0.111.1/24
           - id: 112
-            name: Prod2-112
+            name: Prod2_112
             enabled: true
             ip_address_virtual: 10.0.112.1/24
 
@@ -66,12 +66,12 @@ tenants:
           # SVI definitions.
           - id: 201
             # SVI Description
-            name: HA1-201
+            name: HA1_201
             enabled: true
             # IP anycast gateway to be used in the SVI in every leaf.
             ip_address_virtual: 10.0.101.1/24
           - id: 202
-            name: HA1-202
+            name: HA1_202
             enabled: true
             ip_address_virtual: 10.0.102.1/24
       - name: HA2
@@ -81,11 +81,11 @@ tenants:
           loopback_ip_range: 10.255.15.0/27
         svis:
           - id: 211
-            name: HA2-211
+            name: HA2_211
             enabled: true
             ip_address_virtual: 10.0.111.1/24
           - id: 212
-            name: HA2-212
+            name: HA2_212
             enabled: true
             ip_address_virtual: 10.0.112.1/24
 

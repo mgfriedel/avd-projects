@@ -68,7 +68,7 @@ ethernet_interfaces:
   shutdown: false
   type: switched
   mode: access
-  vlans: '11'
+  vlans: '101'
   spanning_tree_portfast: edge
 port_channel_interfaces:
 - name: Port-Channel1
@@ -79,16 +79,16 @@ port_channel_interfaces:
   vlans: 101-102,111-112,201-202,211-212,3401-3402
 vlans:
 - id: 201
-  name: HA1-201
+  name: HA1_201
   tenant: HA
 - id: 202
-  name: HA1-202
+  name: HA1_202
   tenant: HA
 - id: 211
-  name: HA2-211
+  name: HA2_211
   tenant: HA
 - id: 212
-  name: HA2-212
+  name: HA2_212
   tenant: HA
 - id: 3401
   name: L2_VLAN3401
@@ -97,16 +97,16 @@ vlans:
   name: L2_VLAN3402
   tenant: HA
 - id: 101
-  name: Prod1-101
+  name: Prod1_101
   tenant: Prod
 - id: 102
-  name: Prod1-102
+  name: Prod1_102
   tenant: Prod
 - id: 111
-  name: Prod2-111
+  name: Prod2_111
   tenant: Prod
 - id: 112
-  name: Prod2-112
+  name: Prod2_112
   tenant: Prod
 ip_igmp_snooping:
   globally_enabled: true

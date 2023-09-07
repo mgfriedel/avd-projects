@@ -188,14 +188,14 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 101 | Prod1-101 | - |
-| 102 | Prod1-102 | - |
-| 111 | Prod2-111 | - |
-| 112 | Prod2-112 | - |
-| 201 | HA1-201 | - |
-| 202 | HA1-202 | - |
-| 211 | HA2-211 | - |
-| 212 | HA2-212 | - |
+| 101 | Prod1_101 | - |
+| 102 | Prod1_102 | - |
+| 111 | Prod2_111 | - |
+| 112 | Prod2_112 | - |
+| 201 | HA1_201 | - |
+| 202 | HA1_202 | - |
+| 211 | HA2_211 | - |
+| 212 | HA2_212 | - |
 | 3009 | MLAG_iBGP_Prod1 | LEAF_PEER_L3 |
 | 3010 | MLAG_iBGP_Prod2 | LEAF_PEER_L3 |
 | 3019 | MLAG_iBGP_HA1 | LEAF_PEER_L3 |
@@ -210,28 +210,28 @@ vlan internal order ascending range 1006 1199
 ```eos
 !
 vlan 101
-   name Prod1-101
+   name Prod1_101
 !
 vlan 102
-   name Prod1-102
+   name Prod1_102
 !
 vlan 111
-   name Prod2-111
+   name Prod2_111
 !
 vlan 112
-   name Prod2-112
+   name Prod2_112
 !
 vlan 201
-   name HA1-201
+   name HA1_201
 !
 vlan 202
-   name HA1-202
+   name HA1_202
 !
 vlan 211
-   name HA2-211
+   name HA2_211
 !
 vlan 212
-   name HA2-212
+   name HA2_212
 !
 vlan 3009
    name MLAG_iBGP_Prod1
@@ -276,7 +276,7 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet3 | MLAG_PEER_dc2-leaf1b_Ethernet3 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
 | Ethernet4 | MLAG_PEER_dc2-leaf1b_Ethernet4 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
-| Ethernet5 | dc2-leaf1-server1_PCI1 | *trunk | *11-12,21-22 | *4092 | *- | 5 |
+| Ethernet5 | dc2-leaf1-server1_PCI1 | *trunk | *101,102,111,112,201,202,211,212 | *4092 | *- | 5 |
 | Ethernet8 | DC2-LEAF1-L2SW_Ethernet1 | *trunk | *101-102,111-112,201-202,211-212,3401-3402 | *- | *- | 8 |
 
 *Inherited from Port-Channel Interface
@@ -336,7 +336,7 @@ interface Ethernet8
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | MLAG_PEER_dc2-leaf1b_Po3 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
-| Port-Channel5 | dc2-leaf1-server1_PortChannel dc2-leaf1-server1 | switched | trunk | 11-12,21-22 | 4092 | - | - | - | 5 | - |
+| Port-Channel5 | dc2-leaf1-server1_PortChannel dc2-leaf1-server1 | switched | trunk | 101,102,111,112,201,202,211,212 | 4092 | - | - | - | 5 | - |
 | Port-Channel8 | DC2-LEAF1-L2SW_Po1 | switched | trunk | 101-102,111-112,201-202,211-212,3401-3402 | - | - | - | - | 8 | - |
 
 #### Port-Channel Interfaces Device Configuration
@@ -355,7 +355,7 @@ interface Port-Channel5
    description dc2-leaf1-server1_PortChannel dc2-leaf1-server1
    no shutdown
    switchport
-   switchport trunk allowed vlan 11-12,21-22
+   switchport trunk allowed vlan 101,102,111,112,201,202,211,212
    switchport trunk native vlan 4092
    switchport mode trunk
    mlag 5
@@ -442,14 +442,14 @@ interface Loopback21
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan101 | Prod1-101 | Prod1 | - | False |
-| Vlan102 | Prod1-102 | Prod1 | - | False |
-| Vlan111 | Prod2-111 | Prod2 | - | False |
-| Vlan112 | Prod2-112 | Prod2 | - | False |
-| Vlan201 | HA1-201 | HA1 | - | False |
-| Vlan202 | HA1-202 | HA1 | - | False |
-| Vlan211 | HA2-211 | HA2 | - | False |
-| Vlan212 | HA2-212 | HA2 | - | False |
+| Vlan101 | Prod1_101 | Prod1 | - | False |
+| Vlan102 | Prod1_102 | Prod1 | - | False |
+| Vlan111 | Prod2_111 | Prod2 | - | False |
+| Vlan112 | Prod2_112 | Prod2 | - | False |
+| Vlan201 | HA1_201 | HA1 | - | False |
+| Vlan202 | HA1_202 | HA1 | - | False |
+| Vlan211 | HA2_211 | HA2 | - | False |
+| Vlan212 | HA2_212 | HA2 | - | False |
 | Vlan3009 | MLAG_PEER_L3_iBGP: vrf Prod1 | Prod1 | 1500 | False |
 | Vlan3010 | MLAG_PEER_L3_iBGP: vrf Prod2 | Prod2 | 1500 | False |
 | Vlan3019 | MLAG_PEER_L3_iBGP: vrf HA1 | HA1 | 1500 | False |
@@ -481,49 +481,49 @@ interface Loopback21
 ```eos
 !
 interface Vlan101
-   description Prod1-101
+   description Prod1_101
    no shutdown
    vrf Prod1
    ip address virtual 10.0.101.1/24
 !
 interface Vlan102
-   description Prod1-102
+   description Prod1_102
    no shutdown
    vrf Prod1
    ip address virtual 10.0.102.1/24
 !
 interface Vlan111
-   description Prod2-111
+   description Prod2_111
    no shutdown
    vrf Prod2
    ip address virtual 10.0.111.1/24
 !
 interface Vlan112
-   description Prod2-112
+   description Prod2_112
    no shutdown
    vrf Prod2
    ip address virtual 10.0.112.1/24
 !
 interface Vlan201
-   description HA1-201
+   description HA1_201
    no shutdown
    vrf HA1
    ip address virtual 10.0.101.1/24
 !
 interface Vlan202
-   description HA1-202
+   description HA1_202
    no shutdown
    vrf HA1
    ip address virtual 10.0.102.1/24
 !
 interface Vlan211
-   description HA2-211
+   description HA2_211
    no shutdown
    vrf HA2
    ip address virtual 10.0.111.1/24
 !
 interface Vlan212
-   description HA2-212
+   description HA2_212
    no shutdown
    vrf HA2
    ip address virtual 10.0.112.1/24

@@ -146,14 +146,14 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 101 | Prod1-101 | - |
-| 102 | Prod1-102 | - |
-| 111 | Prod2-111 | - |
-| 112 | Prod2-112 | - |
-| 201 | HA1-201 | - |
-| 202 | HA1-202 | - |
-| 211 | HA2-211 | - |
-| 212 | HA2-212 | - |
+| 101 | Prod1_101 | - |
+| 102 | Prod1_102 | - |
+| 111 | Prod2_111 | - |
+| 112 | Prod2_112 | - |
+| 201 | HA1_201 | - |
+| 202 | HA1_202 | - |
+| 211 | HA2_211 | - |
+| 212 | HA2_212 | - |
 | 3401 | L2_VLAN3401 | - |
 | 3402 | L2_VLAN3402 | - |
 
@@ -162,28 +162,28 @@ vlan internal order ascending range 1006 1199
 ```eos
 !
 vlan 101
-   name Prod1-101
+   name Prod1_101
 !
 vlan 102
-   name Prod1-102
+   name Prod1_102
 !
 vlan 111
-   name Prod2-111
+   name Prod2_111
 !
 vlan 112
-   name Prod2-112
+   name Prod2_112
 !
 vlan 201
-   name HA1-201
+   name HA1_201
 !
 vlan 202
-   name HA1-202
+   name HA1_202
 !
 vlan 211
-   name HA2-211
+   name HA2_211
 !
 vlan 212
-   name HA2-212
+   name HA2_212
 !
 vlan 3401
    name L2_VLAN3401
@@ -204,7 +204,7 @@ vlan 3402
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | DC2-LEAF1A_Ethernet8 | *trunk | *101-102,111-112,201-202,211-212,3401-3402 | *- | *- | 1 |
 | Ethernet2 | DC2-LEAF1B_Ethernet8 | *trunk | *101-102,111-112,201-202,211-212,3401-3402 | *- | *- | 1 |
-| Ethernet5 |  dc2-leaf1-server1_iLO | access | 11 | - | - | - |
+| Ethernet5 |  dc2-leaf1-server1_iLO | access | 101 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -225,7 +225,7 @@ interface Ethernet2
 interface Ethernet5
    description dc2-leaf1-server1_iLO
    no shutdown
-   switchport access vlan 11
+   switchport access vlan 101
    switchport mode access
    switchport
    spanning-tree portfast
