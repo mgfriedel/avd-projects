@@ -30,9 +30,9 @@ all:
                   ansible_host: 172.16.1.152
             DC1_DCI:
               hosts:
-                dc1-dci1:
+                dc1-dcileaf1:
                   ansible_host: 172.16.1.105
-                dc1-dci2:
+                dc1-dcileaf2:
                   ansible_host: 172.16.1.106
         DC2:
           children:
@@ -60,9 +60,9 @@ all:
                   ansible_host: 172.16.1.162
             DC2_DCI:
               hosts:
-                dc2-dci1:
+                dc2-dcileaf1:
                   ansible_host: 172.16.1.115
-                dc2-dci2:
+                dc2-dcileaf2:
                   ansible_host: 172.16.1.116
 
     NETWORK_SERVICES:

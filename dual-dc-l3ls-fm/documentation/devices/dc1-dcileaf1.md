@@ -1,4 +1,4 @@
-# dc2-dci1
+# dc1-dcileaf1
 
 ## Table of Contents
 
@@ -42,7 +42,7 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 172.16.1.115/24 | 172.16.1.1 |
+| Management1 | oob_management | oob | MGMT | 172.16.1.105/24 | 172.16.1.1 |
 
 ##### IPv6
 
@@ -58,7 +58,7 @@ interface Management1
    description oob_management
    no shutdown
    vrf MGMT
-   ip address 172.16.1.115/24
+   ip address 172.16.1.105/24
 ```
 
 ### Management API HTTP
@@ -151,34 +151,34 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC2-SPINE1_Ethernet5 | routed | - | 10.255.255.121/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC2-SPINE2_Ethernet5 | routed | - | 10.255.255.123/31 | default | 1500 | False | - | - |
-| Ethernet6 | P2P_LINK_TO_dc1-dci1_Ethernet6 | routed | - | 172.100.100.1/31 | default | 1500 | False | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet5 | routed | - | 10.255.255.17/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet5 | routed | - | 10.255.255.19/31 | default | 1500 | False | - | - |
+| Ethernet6 | P2P_LINK_TO_dc2-dcileaf1_Ethernet6 | routed | - | 172.100.100.0/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC2-SPINE1_Ethernet5
+   description P2P_LINK_TO_DC1-SPINE1_Ethernet5
    no shutdown
    mtu 1500
    no switchport
-   ip address 10.255.255.121/31
+   ip address 10.255.255.17/31
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC2-SPINE2_Ethernet5
+   description P2P_LINK_TO_DC1-SPINE2_Ethernet5
    no shutdown
    mtu 1500
    no switchport
-   ip address 10.255.255.123/31
+   ip address 10.255.255.19/31
 !
 interface Ethernet6
-   description P2P_LINK_TO_dc1-dci1_Ethernet6
+   description P2P_LINK_TO_dc2-dcileaf1_Ethernet6
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.100.100.1/31
+   ip address 172.100.100.0/31
 ```
 
 ### Loopback Interfaces
@@ -189,7 +189,7 @@ interface Ethernet6
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 10.255.128.17/32 |
+| Loopback0 | EVPN_Overlay_Peering | default | 10.255.0.7/32 |
 
 ##### IPv6
 
@@ -205,7 +205,7 @@ interface Ethernet6
 interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
-   ip address 10.255.128.17/32
+   ip address 10.255.0.7/32
 ```
 
 ## Routing
@@ -266,7 +266,7 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65112|  10.255.128.17 |
+| 65111|  10.255.0.7 |
 
 | BGP Tuning |
 | ---------- |
@@ -311,10 +311,10 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
-| 10.255.0.7 | 65111 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - |
-| 10.255.255.120 | 65200 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
-| 10.255.255.122 | 65200 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
-| 172.100.100.0 | 65102 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 10.255.128.17 | 65112 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - |
+| 10.255.255.16 | 65100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 10.255.255.18 | 65100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 172.100.100.1 | 65202 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -337,8 +337,8 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 
 ```eos
 !
-router bgp 65112
-   router-id 10.255.128.17
+router bgp 65111
+   router-id 10.255.0.7
    maximum-paths 4 ecmp 4
    update wait-install
    no bgp default ipv4-unicast
@@ -360,19 +360,19 @@ router bgp 65112
    neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
-   neighbor 10.255.0.7 peer group EVPN-OVERLAY-CORE
-   neighbor 10.255.0.7 remote-as 65111
-   neighbor 10.255.0.7 description dc1-dci1
-   neighbor 10.255.255.120 peer group IPv4-UNDERLAY-PEERS
-   neighbor 10.255.255.120 remote-as 65200
-   neighbor 10.255.255.120 description dc2-spine1_Ethernet5
-   neighbor 10.255.255.122 peer group IPv4-UNDERLAY-PEERS
-   neighbor 10.255.255.122 remote-as 65200
-   neighbor 10.255.255.122 description dc2-spine2_Ethernet5
-   neighbor 172.100.100.0 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.100.100.0 remote-as 65102
-   neighbor 172.100.100.0 local-as 65202 no-prepend replace-as
-   neighbor 172.100.100.0 description dc1-dci1
+   neighbor 10.255.128.17 peer group EVPN-OVERLAY-CORE
+   neighbor 10.255.128.17 remote-as 65112
+   neighbor 10.255.128.17 description dc2-dcileaf1
+   neighbor 10.255.255.16 peer group IPv4-UNDERLAY-PEERS
+   neighbor 10.255.255.16 remote-as 65100
+   neighbor 10.255.255.16 description dc1-spine1_Ethernet5
+   neighbor 10.255.255.18 peer group IPv4-UNDERLAY-PEERS
+   neighbor 10.255.255.18 remote-as 65100
+   neighbor 10.255.255.18 description dc1-spine2_Ethernet5
+   neighbor 172.100.100.1 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.100.100.1 remote-as 65202
+   neighbor 172.100.100.1 local-as 65102 no-prepend replace-as
+   neighbor 172.100.100.1 description dc2-dcileaf1
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn
@@ -415,14 +415,14 @@ router bfd
 
 | Sequence | Action |
 | -------- | ------ |
-| 10 | permit 10.255.128.0/27 eq 32 |
+| 10 | permit 10.255.0.0/27 eq 32 |
 
 #### Prefix-lists Device Configuration
 
 ```eos
 !
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-   seq 10 permit 10.255.128.0/27 eq 32
+   seq 10 permit 10.255.0.0/27 eq 32
 ```
 
 ### Route-maps

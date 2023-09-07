@@ -93,11 +93,11 @@ l3_edge:
   # Define each P2P L3 link and link the nodes, the interfaces and the profile used.
   p2p_links:
     - id: 1
-      nodes: [dc1-dci1, dc2-dci1]
+      nodes: [dc1-dcileaf1, dc2-dcileaf1]
       interfaces: [Ethernet6, Ethernet6]
       profile: DCI_profile
     - id: 2
-      nodes: [dc1-dci2, dc2-dci2]
+      nodes: [dc1-dcileaf2, dc2-dcileaf2]
       interfaces: [Ethernet7, Ethernet7]
       profile: DCI_profile
     #- id: 2

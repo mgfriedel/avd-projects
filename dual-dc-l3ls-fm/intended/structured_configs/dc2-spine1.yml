@@ -54,11 +54,11 @@ router_bgp:
   - ip_address: 10.255.255.121
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65112'
-    description: dc2-dci1_Ethernet1
+    description: dc2-dcileaf1_Ethernet1
   - ip_address: 10.255.255.125
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65112'
-    description: dc2-dci2_Ethernet1
+    description: dc2-dcileaf2_Ethernet1
   - ip_address: 10.255.128.13
     peer_group: EVPN-OVERLAY-PEERS
     description: dc2-leaf1a
@@ -155,19 +155,19 @@ ethernet_interfaces:
   type: routed
   ip_address: 10.255.255.116/31
 - name: Ethernet5
-  peer: dc2-dci1
+  peer: dc2-dcileaf1
   peer_interface: Ethernet1
   peer_type: overlay-controller
-  description: P2P_LINK_TO_DC2-DCI1_Ethernet1
+  description: P2P_LINK_TO_DC2-DCILEAF1_Ethernet1
   shutdown: false
   mtu: 1500
   type: routed
   ip_address: 10.255.255.120/31
 - name: Ethernet6
-  peer: dc2-dci2
+  peer: dc2-dcileaf2
   peer_interface: Ethernet1
   peer_type: overlay-controller
-  description: P2P_LINK_TO_DC2-DCI2_Ethernet1
+  description: P2P_LINK_TO_DC2-DCILEAF2_Ethernet1
   shutdown: false
   mtu: 1500
   type: routed

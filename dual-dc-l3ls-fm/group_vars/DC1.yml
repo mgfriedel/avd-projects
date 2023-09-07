@@ -161,7 +161,7 @@ overlay_controller:
           enabled: true
           inter_domain: true
       nodes:
-        - name: dc1-dci1
+        - name: dc1-dcileaf1
           id: 5
           mgmt_ip: 172.16.1.105/24
           uplink_switch_interfaces:
@@ -170,8 +170,8 @@ overlay_controller:
           evpn_gateway:
             # Define remote peers of the EVPN VXLAN Gateway. If the hostname can be found in the inventory, ip_address and BGP ASN will be automatically populated. Manual override takes precedence. If the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
             remote_peers:
-              - hostname: dc2-dci1
-        - name: dc1-dci2
+              - hostname: dc2-dcileaf1
+        - name: dc1-dcileaf2
           id: 6
           mgmt_ip: 172.16.1.106/24
           uplink_switch_interfaces:
@@ -180,4 +180,4 @@ overlay_controller:
           evpn_gateway:
             # Define remote peers of the EVPN VXLAN Gateway. If the hostname can be found in the inventory, ip_address and BGP ASN will be automatically populated. Manual override takes precedence. If the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
             remote_peers:
-              - hostname: dc2-dci1
+              - hostname: dc2-dcileaf1

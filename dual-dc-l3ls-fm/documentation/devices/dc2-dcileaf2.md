@@ -1,4 +1,4 @@
-# dc2-dci2
+# dc2-dcileaf2
 
 ## Table of Contents
 
@@ -153,7 +153,7 @@ vlan internal order ascending range 1006 1199
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 | P2P_LINK_TO_DC2-SPINE1_Ethernet6 | routed | - | 10.255.255.125/31 | default | 1500 | False | - | - |
 | Ethernet2 | P2P_LINK_TO_DC2-SPINE2_Ethernet6 | routed | - | 10.255.255.127/31 | default | 1500 | False | - | - |
-| Ethernet7 | P2P_LINK_TO_dc1-dci2_Ethernet7 | routed | - | 172.100.100.3/31 | default | 1500 | False | - | - |
+| Ethernet7 | P2P_LINK_TO_dc1-dcileaf2_Ethernet7 | routed | - | 172.100.100.3/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -174,7 +174,7 @@ interface Ethernet2
    ip address 10.255.255.127/31
 !
 interface Ethernet7
-   description P2P_LINK_TO_dc1-dci2_Ethernet7
+   description P2P_LINK_TO_dc1-dcileaf2_Ethernet7
    no shutdown
    mtu 1500
    no switchport
@@ -362,7 +362,7 @@ router bgp 65112
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 10.255.0.8 peer group EVPN-OVERLAY-CORE
    neighbor 10.255.0.8 remote-as 65111
-   neighbor 10.255.0.8 description dc1-dci2
+   neighbor 10.255.0.8 description dc1-dcileaf2
    neighbor 10.255.255.124 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.255.255.124 remote-as 65200
    neighbor 10.255.255.124 description dc2-spine1_Ethernet6
@@ -372,7 +372,7 @@ router bgp 65112
    neighbor 172.100.100.2 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.100.100.2 remote-as 65102
    neighbor 172.100.100.2 local-as 65202 no-prepend replace-as
-   neighbor 172.100.100.2 description dc1-dci2
+   neighbor 172.100.100.2 description dc1-dcileaf2
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

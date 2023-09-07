@@ -1,8 +1,8 @@
-! ansible-avd-examples/dual-dc-l3ls/switch-basic-configurations/dc1-leaf2a-basic-configuration.txt
+! ansible-avd-examples/dual-dc-l3ls/switch-basic-configurations/dc2-leaf2a-basic-configuration.txt
 ! Basic EOS config
 !
 ! Hostname of the device
-hostname dc1-dci2
+hostname dc2-dcileaf1
 !
 ! Configures username and password for the ansible user
 username ansible privilege 15 role network-admin secret sha512 $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
@@ -18,7 +18,7 @@ interface Management1
    no shutdown
    vrf MGMT
    ! IP address - must be set uniquely per device
-   ip address 172.16.1.106/24
+   ip address 172.16.1.115/24
 !
 ! Static default route for VRF MGMT
 ip route vrf MGMT 0.0.0.0/0 172.16.1.1

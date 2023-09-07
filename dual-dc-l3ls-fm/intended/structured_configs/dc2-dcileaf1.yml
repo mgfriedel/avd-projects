@@ -1,7 +1,7 @@
-hostname: dc1-dci1
+hostname: dc2-dcileaf1
 router_bgp:
-  as: '65111'
-  router_id: 10.255.0.7
+  as: '65112'
+  router_id: 10.255.128.17
   bgp:
     default:
       ipv4_unicast: false
@@ -44,23 +44,23 @@ router_bgp:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
   neighbors:
-  - ip_address: 10.255.255.16
+  - ip_address: 10.255.255.120
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65100'
-    description: dc1-spine1_Ethernet5
-  - ip_address: 10.255.255.18
+    remote_as: '65200'
+    description: dc2-spine1_Ethernet5
+  - ip_address: 10.255.255.122
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65100'
-    description: dc1-spine2_Ethernet5
-  - ip_address: 10.255.128.17
+    remote_as: '65200'
+    description: dc2-spine2_Ethernet5
+  - ip_address: 10.255.0.7
     peer_group: EVPN-OVERLAY-CORE
-    description: dc2-dci1
-    remote_as: '65112'
-  - ip_address: 172.100.100.1
-    remote_as: '65202'
-    description: dc2-dci1
+    description: dc1-dcileaf1
+    remote_as: '65111'
+  - ip_address: 172.100.100.0
+    remote_as: '65102'
+    description: dc1-dcileaf1
     peer_group: IPv4-UNDERLAY-PEERS
-    local_as: '65102'
+    local_as: '65202'
   address_family_evpn:
     neighbor_default:
       next_hop_self_received_evpn_routes:
@@ -102,7 +102,7 @@ management_interfaces:
   description: oob_management
   shutdown: false
   vrf: MGMT
-  ip_address: 172.16.1.105/24
+  ip_address: 172.16.1.115/24
   gateway: 172.16.1.1
   type: oob
 management_api_http:
@@ -112,42 +112,42 @@ management_api_http:
 eos_cli: "interface Management1\n   no lldp receive\n   no lldp transmit\n"
 ethernet_interfaces:
 - name: Ethernet1
-  peer: dc1-spine1
+  peer: dc2-spine1
   peer_interface: Ethernet5
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE1_Ethernet5
+  description: P2P_LINK_TO_DC2-SPINE1_Ethernet5
   shutdown: false
   mtu: 1500
   type: routed
-  ip_address: 10.255.255.17/31
+  ip_address: 10.255.255.121/31
 - name: Ethernet2
-  peer: dc1-spine2
+  peer: dc2-spine2
   peer_interface: Ethernet5
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE2_Ethernet5
+  description: P2P_LINK_TO_DC2-SPINE2_Ethernet5
   shutdown: false
   mtu: 1500
   type: routed
-  ip_address: 10.255.255.19/31
+  ip_address: 10.255.255.123/31
 - name: Ethernet6
-  peer: dc2-dci1
+  peer: dc1-dcileaf1
   peer_interface: Ethernet6
   peer_type: overlay-controller
-  description: P2P_LINK_TO_dc2-dci1_Ethernet6
+  description: P2P_LINK_TO_dc1-dcileaf1_Ethernet6
   type: routed
   shutdown: false
   mtu: 1500
-  ip_address: 172.100.100.0/31
+  ip_address: 172.100.100.1/31
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
   shutdown: false
-  ip_address: 10.255.0.7/32
+  ip_address: 10.255.128.17/32
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
   - sequence: 10
-    action: permit 10.255.0.0/27 eq 32
+    action: permit 10.255.128.0/27 eq 32
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
