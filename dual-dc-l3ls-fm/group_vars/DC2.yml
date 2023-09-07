@@ -95,13 +95,6 @@ l3leaf:
 
     - group: DC2_L3_LEAF2
       bgp_as: 65202
-      evpn_gateway:
-        # Specific BGP EVPN Gateway functionality for route types 2 (MAC-IP), 3 (IMET) and 5 (IP-PREFIX) can be enabled separately as needed.
-        evpn_l2:
-          enabled: true
-        evpn_l3:
-          enabled: true
-          inter_domain: true
       nodes:
         - name: dc2-leaf2a
           id: 13
@@ -109,20 +102,12 @@ l3leaf:
           uplink_switch_interfaces:
             - Ethernet3
             - Ethernet3
-          evpn_gateway:
-            # Define remote peers of the EVPN VXLAN Gateway. If the hostname can be found in the inventory, ip_address and BGP ASN will be automatically populated. Manual override takes precedence. If the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-            remote_peers:
-              - hostname: dc1-leaf2a
         - name: dc2-leaf2b
           id: 14
           mgmt_ip: 172.16.1.114/24
           uplink_switch_interfaces:
             - Ethernet4
             - Ethernet4
-          evpn_gateway:
-            # Define remote peers of the EVPN VXLAN Gateway. If the hostname can be found in the inventory, ip_address and BGP ASN will be automatically populated. Manual override takes precedence. If the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-            remote_peers:
-              - hostname: dc1-leaf2b
 
 # L2 Leaf switch group
 l2leaf:
@@ -179,6 +164,13 @@ overlay_controller:
   node_groups:
     - group: DC2_DCI
       bgp_as: 65112
+      evpn_gateway:
+        # Specific BGP EVPN Gateway functionality for route types 2 (MAC-IP), 3 (IMET) and 5 (IP-PREFIX) can be enabled separately as needed.
+        evpn_l2:
+          enabled: true
+        evpn_l3:
+          enabled: true
+          inter_domain: true
       nodes:
         - name: dc2-dci1
           id: 15
@@ -186,9 +178,17 @@ overlay_controller:
           uplink_switch_interfaces:
             - Ethernet5
             - Ethernet5
+          evpn_gateway:
+            # Define remote peers of the EVPN VXLAN Gateway. If the hostname can be found in the inventory, ip_address and BGP ASN will be automatically populated. Manual override takes precedence. If the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+            remote_peers:
+              - hostname: dc1-dci1
         - name: dc2-dci2
           id: 16
           mgmt_ip: 172.16.1.116/24
           uplink_switch_interfaces:
             - Ethernet6
             - Ethernet6
+          evpn_gateway:
+            # Define remote peers of the EVPN VXLAN Gateway. If the hostname can be found in the inventory, ip_address and BGP ASN will be automatically populated. Manual override takes precedence. If the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+            remote_peers:
+              - hostname: dc1-dci2

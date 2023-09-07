@@ -722,17 +722,6 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 
 #### Router BGP Peer Groups
 
-##### EVPN-OVERLAY-CORE
-
-| Settings | Value |
-| -------- | ----- |
-| Address Family | evpn |
-| Source | Loopback0 |
-| BFD | True |
-| Ebgp multihop | 15 |
-| Send community | all |
-| Maximum routes | 0 (no limit) |
-
 ##### EVPN-OVERLAY-PEERS
 
 | Settings | Value |
@@ -766,7 +755,6 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
-| 10.255.0.5 | 65102 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - |
 | 10.255.128.11 | 65200 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 | 10.255.128.12 | 65200 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 | 10.255.129.121 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - |
@@ -783,31 +771,22 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 
 | Peer Group | Activate | Encapsulation |
 | ---------- | -------- | ------------- |
-| EVPN-OVERLAY-CORE | True | default |
 | EVPN-OVERLAY-PEERS | True | default |
-
-##### EVPN DCI Gateway Summary
-
-| Settings | Value |
-| -------- | ----- |
-| Remote Domain Peer Groups | EVPN-OVERLAY-CORE |
-| L3 Gateway Configured | True |
-| L3 Gateway Inter-domain | True |
 
 #### Router BGP VLANs
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 101 | 10.255.128.15:10101 | 10101:10101<br>remote 10101:10101 | - | - | learned |
-| 102 | 10.255.128.15:10102 | 10102:10102<br>remote 10102:10102 | - | - | learned |
-| 111 | 10.255.128.15:10111 | 10111:10111<br>remote 10111:10111 | - | - | learned |
-| 112 | 10.255.128.15:10112 | 10112:10112<br>remote 10112:10112 | - | - | learned |
-| 201 | 10.255.128.15:20201 | 20201:20201<br>remote 20201:20201 | - | - | learned |
-| 202 | 10.255.128.15:20202 | 20202:20202<br>remote 20202:20202 | - | - | learned |
-| 211 | 10.255.128.15:20211 | 20211:20211<br>remote 20211:20211 | - | - | learned |
-| 212 | 10.255.128.15:20212 | 20212:20212<br>remote 20212:20212 | - | - | learned |
-| 3401 | 10.255.128.15:23401 | 23401:23401<br>remote 23401:23401 | - | - | learned |
-| 3402 | 10.255.128.15:23402 | 23402:23402<br>remote 23402:23402 | - | - | learned |
+| 101 | 10.255.128.15:10101 | 10101:10101 | - | - | learned |
+| 102 | 10.255.128.15:10102 | 10102:10102 | - | - | learned |
+| 111 | 10.255.128.15:10111 | 10111:10111 | - | - | learned |
+| 112 | 10.255.128.15:10112 | 10112:10112 | - | - | learned |
+| 201 | 10.255.128.15:20201 | 20201:20201 | - | - | learned |
+| 202 | 10.255.128.15:20202 | 20202:20202 | - | - | learned |
+| 211 | 10.255.128.15:20211 | 20211:20211 | - | - | learned |
+| 212 | 10.255.128.15:20212 | 20212:20212 | - | - | learned |
+| 3401 | 10.255.128.15:23401 | 23401:23401 | - | - | learned |
+| 3402 | 10.255.128.15:23402 | 23402:23402 | - | - | learned |
 
 #### Router BGP VRFs
 
@@ -827,12 +806,6 @@ router bgp 65202
    maximum-paths 4 ecmp 4
    update wait-install
    no bgp default ipv4-unicast
-   neighbor EVPN-OVERLAY-CORE peer group
-   neighbor EVPN-OVERLAY-CORE update-source Loopback0
-   neighbor EVPN-OVERLAY-CORE bfd
-   neighbor EVPN-OVERLAY-CORE ebgp-multihop 15
-   neighbor EVPN-OVERLAY-CORE send-community
-   neighbor EVPN-OVERLAY-CORE maximum-routes 0
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
@@ -852,9 +825,6 @@ router bgp 65202
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
-   neighbor 10.255.0.5 peer group EVPN-OVERLAY-CORE
-   neighbor 10.255.0.5 remote-as 65102
-   neighbor 10.255.0.5 description dc1-leaf2a
    neighbor 10.255.128.11 peer group EVPN-OVERLAY-PEERS
    neighbor 10.255.128.11 remote-as 65200
    neighbor 10.255.128.11 description dc2-spine1
@@ -873,82 +843,58 @@ router bgp 65202
    !
    vlan 101
       rd 10.255.128.15:10101
-      rd evpn domain remote 10.255.128.15:10101
       route-target both 10101:10101
-      route-target import export evpn domain remote 10101:10101
       redistribute learned
    !
    vlan 102
       rd 10.255.128.15:10102
-      rd evpn domain remote 10.255.128.15:10102
       route-target both 10102:10102
-      route-target import export evpn domain remote 10102:10102
       redistribute learned
    !
    vlan 111
       rd 10.255.128.15:10111
-      rd evpn domain remote 10.255.128.15:10111
       route-target both 10111:10111
-      route-target import export evpn domain remote 10111:10111
       redistribute learned
    !
    vlan 112
       rd 10.255.128.15:10112
-      rd evpn domain remote 10.255.128.15:10112
       route-target both 10112:10112
-      route-target import export evpn domain remote 10112:10112
       redistribute learned
    !
    vlan 201
       rd 10.255.128.15:20201
-      rd evpn domain remote 10.255.128.15:20201
       route-target both 20201:20201
-      route-target import export evpn domain remote 20201:20201
       redistribute learned
    !
    vlan 202
       rd 10.255.128.15:20202
-      rd evpn domain remote 10.255.128.15:20202
       route-target both 20202:20202
-      route-target import export evpn domain remote 20202:20202
       redistribute learned
    !
    vlan 211
       rd 10.255.128.15:20211
-      rd evpn domain remote 10.255.128.15:20211
       route-target both 20211:20211
-      route-target import export evpn domain remote 20211:20211
       redistribute learned
    !
    vlan 212
       rd 10.255.128.15:20212
-      rd evpn domain remote 10.255.128.15:20212
       route-target both 20212:20212
-      route-target import export evpn domain remote 20212:20212
       redistribute learned
    !
    vlan 3401
       rd 10.255.128.15:23401
-      rd evpn domain remote 10.255.128.15:23401
       route-target both 23401:23401
-      route-target import export evpn domain remote 23401:23401
       redistribute learned
    !
    vlan 3402
       rd 10.255.128.15:23402
-      rd evpn domain remote 10.255.128.15:23402
       route-target both 23402:23402
-      route-target import export evpn domain remote 23402:23402
       redistribute learned
    !
    address-family evpn
-      neighbor EVPN-OVERLAY-CORE activate
-      neighbor EVPN-OVERLAY-CORE domain remote
       neighbor EVPN-OVERLAY-PEERS activate
-      neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
    !
    address-family ipv4
-      no neighbor EVPN-OVERLAY-CORE activate
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate

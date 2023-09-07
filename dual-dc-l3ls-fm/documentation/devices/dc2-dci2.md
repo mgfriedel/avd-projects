@@ -260,6 +260,17 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 
 #### Router BGP Peer Groups
 
+##### EVPN-OVERLAY-CORE
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | evpn |
+| Source | Loopback0 |
+| BFD | True |
+| Ebgp multihop | 15 |
+| Send community | all |
+| Maximum routes | 0 (no limit) |
+
 ##### EVPN-OVERLAY-PEERS
 
 | Settings | Value |
@@ -284,6 +295,7 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
+| 10.255.0.8 | 65111 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - |
 | 172.100.100.2 | 65102 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
@@ -292,7 +304,16 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 
 | Peer Group | Activate | Encapsulation |
 | ---------- | -------- | ------------- |
+| EVPN-OVERLAY-CORE | True | default |
 | EVPN-OVERLAY-PEERS | True | default |
+
+##### EVPN DCI Gateway Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Remote Domain Peer Groups | EVPN-OVERLAY-CORE |
+| L3 Gateway Configured | True |
+| L3 Gateway Inter-domain | True |
 
 #### Router BGP Device Configuration
 
@@ -303,6 +324,12 @@ router bgp 65112
    maximum-paths 4 ecmp 4
    update wait-install
    no bgp default ipv4-unicast
+   neighbor EVPN-OVERLAY-CORE peer group
+   neighbor EVPN-OVERLAY-CORE update-source Loopback0
+   neighbor EVPN-OVERLAY-CORE bfd
+   neighbor EVPN-OVERLAY-CORE ebgp-multihop 15
+   neighbor EVPN-OVERLAY-CORE send-community
+   neighbor EVPN-OVERLAY-CORE maximum-routes 0
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
@@ -315,6 +342,9 @@ router bgp 65112
    neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor 10.255.0.8 peer group EVPN-OVERLAY-CORE
+   neighbor 10.255.0.8 remote-as 65111
+   neighbor 10.255.0.8 description dc1-dci2
    neighbor 172.100.100.2 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.100.100.2 remote-as 65102
    neighbor 172.100.100.2 local-as 65202 no-prepend replace-as
@@ -322,9 +352,13 @@ router bgp 65112
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn
+      neighbor EVPN-OVERLAY-CORE activate
+      neighbor EVPN-OVERLAY-CORE domain remote
       neighbor EVPN-OVERLAY-PEERS activate
+      neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
    !
    address-family ipv4
+      no neighbor EVPN-OVERLAY-CORE activate
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
 ```

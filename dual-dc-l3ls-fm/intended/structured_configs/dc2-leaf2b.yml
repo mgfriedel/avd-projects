@@ -33,13 +33,6 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
-  - name: EVPN-OVERLAY-CORE
-    type: evpn
-    update_source: Loopback0
-    bfd: true
-    send_community: all
-    maximum_routes: 0
-    ebgp_multihop: 15
   address_family_ipv4:
     peer_groups:
     - name: MLAG-IPv4-UNDERLAY-PEER
@@ -47,8 +40,6 @@ router_bgp:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
     - name: EVPN-OVERLAY-PEERS
-      activate: false
-    - name: EVPN-OVERLAY-CORE
       activate: false
   neighbors:
   - ip_address: 10.255.129.120
@@ -70,23 +61,12 @@ router_bgp:
     peer_group: EVPN-OVERLAY-PEERS
     description: dc2-spine2
     remote_as: '65200'
-  - ip_address: 10.255.0.6
-    peer_group: EVPN-OVERLAY-CORE
-    description: dc1-leaf2b
-    remote_as: '65102'
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
   address_family_evpn:
-    neighbor_default:
-      next_hop_self_received_evpn_routes:
-        enable: true
-        inter_domain: true
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
-      activate: true
-    - name: EVPN-OVERLAY-CORE
-      domain_remote: true
       activate: true
   vrfs:
   - name: HA1
@@ -172,140 +152,80 @@ router_bgp:
     route_targets:
       both:
       - 20201:20201
-      import_export_evpn_domains:
-      - domain: remote
-        route_target: 20201:20201
     redistribute_routes:
     - learned
-    rd_evpn_domain:
-      domain: remote
-      rd: 10.255.128.16:20201
   - id: 202
     tenant: HA
     rd: 10.255.128.16:20202
     route_targets:
       both:
       - 20202:20202
-      import_export_evpn_domains:
-      - domain: remote
-        route_target: 20202:20202
     redistribute_routes:
     - learned
-    rd_evpn_domain:
-      domain: remote
-      rd: 10.255.128.16:20202
   - id: 211
     tenant: HA
     rd: 10.255.128.16:20211
     route_targets:
       both:
       - 20211:20211
-      import_export_evpn_domains:
-      - domain: remote
-        route_target: 20211:20211
     redistribute_routes:
     - learned
-    rd_evpn_domain:
-      domain: remote
-      rd: 10.255.128.16:20211
   - id: 212
     tenant: HA
     rd: 10.255.128.16:20212
     route_targets:
       both:
       - 20212:20212
-      import_export_evpn_domains:
-      - domain: remote
-        route_target: 20212:20212
     redistribute_routes:
     - learned
-    rd_evpn_domain:
-      domain: remote
-      rd: 10.255.128.16:20212
   - id: 3401
     tenant: HA
     rd: 10.255.128.16:23401
     route_targets:
       both:
       - 23401:23401
-      import_export_evpn_domains:
-      - domain: remote
-        route_target: 23401:23401
     redistribute_routes:
     - learned
-    rd_evpn_domain:
-      domain: remote
-      rd: 10.255.128.16:23401
   - id: 3402
     tenant: HA
     rd: 10.255.128.16:23402
     route_targets:
       both:
       - 23402:23402
-      import_export_evpn_domains:
-      - domain: remote
-        route_target: 23402:23402
     redistribute_routes:
     - learned
-    rd_evpn_domain:
-      domain: remote
-      rd: 10.255.128.16:23402
   - id: 101
     tenant: Prod
     rd: 10.255.128.16:10101
     route_targets:
       both:
       - 10101:10101
-      import_export_evpn_domains:
-      - domain: remote
-        route_target: 10101:10101
     redistribute_routes:
     - learned
-    rd_evpn_domain:
-      domain: remote
-      rd: 10.255.128.16:10101
   - id: 102
     tenant: Prod
     rd: 10.255.128.16:10102
     route_targets:
       both:
       - 10102:10102
-      import_export_evpn_domains:
-      - domain: remote
-        route_target: 10102:10102
     redistribute_routes:
     - learned
-    rd_evpn_domain:
-      domain: remote
-      rd: 10.255.128.16:10102
   - id: 111
     tenant: Prod
     rd: 10.255.128.16:10111
     route_targets:
       both:
       - 10111:10111
-      import_export_evpn_domains:
-      - domain: remote
-        route_target: 10111:10111
     redistribute_routes:
     - learned
-    rd_evpn_domain:
-      domain: remote
-      rd: 10.255.128.16:10111
   - id: 112
     tenant: Prod
     rd: 10.255.128.16:10112
     route_targets:
       both:
       - 10112:10112
-      import_export_evpn_domains:
-      - domain: remote
-        route_target: 10112:10112
     redistribute_routes:
     - learned
-    rd_evpn_domain:
-      domain: remote
-      rd: 10.255.128.16:10112
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

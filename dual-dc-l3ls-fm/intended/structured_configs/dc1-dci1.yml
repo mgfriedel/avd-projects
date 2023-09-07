@@ -25,20 +25,40 @@ router_bgp:
     maximum_routes: 0
     ebgp_multihop: 3
     next_hop_unchanged: true
+  - name: EVPN-OVERLAY-CORE
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 15
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
+    - name: EVPN-OVERLAY-CORE
+      activate: false
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
   address_family_evpn:
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+        inter_domain: true
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
       activate: true
+    - name: EVPN-OVERLAY-CORE
+      domain_remote: true
+      activate: true
   neighbors:
+  - ip_address: 10.255.128.17
+    peer_group: EVPN-OVERLAY-CORE
+    description: dc2-dci1
+    remote_as: '65112'
   - ip_address: 172.100.100.1
     remote_as: '65202'
     description: dc2-dci1
