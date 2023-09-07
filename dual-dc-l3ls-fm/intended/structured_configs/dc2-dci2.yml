@@ -11,15 +11,6 @@ router_bgp:
   updates:
     wait_install: true
   peer_groups:
-  - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
-    remote_as: '65112'
-    next_hop_self: true
-    description: dc2-dci1
-    password: 4b21pAdCvWeAqpcKDFMdWw==
-    maximum_routes: 12000
-    send_community: all
-    route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
     password: 7x4B4rnJhZB438m9+BrBfQ==
@@ -33,34 +24,13 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
+    next_hop_unchanged: true
   address_family_ipv4:
     peer_groups:
-    - name: MLAG-IPv4-UNDERLAY-PEER
-      activate: true
     - name: IPv4-UNDERLAY-PEERS
       activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
-  neighbors:
-  - ip_address: 10.255.129.124
-    peer_group: MLAG-IPv4-UNDERLAY-PEER
-    description: dc2-dci1
-  - ip_address: 10.255.255.124
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65200'
-    description: dc2-spine1_Ethernet6
-  - ip_address: 10.255.255.126
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65200'
-    description: dc2-spine2_Ethernet6
-  - ip_address: 10.255.128.11
-    peer_group: EVPN-OVERLAY-PEERS
-    description: dc2-spine1
-    remote_as: '65200'
-  - ip_address: 10.255.128.12
-    peer_group: EVPN-OVERLAY-PEERS
-    description: dc2-spine2
-    remote_as: '65200'
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
@@ -68,164 +38,12 @@ router_bgp:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
       activate: true
-  vrfs:
-  - name: HA1
-    router_id: 10.255.128.18
-    rd: 10.255.128.18:20
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - '20:20'
-      export:
-      - address_family: evpn
-        route_targets:
-        - '20:20'
-    redistribute_routes:
-    - source_protocol: connected
-    neighbors:
-    - ip_address: 10.255.129.124
-      peer_group: MLAG-IPv4-UNDERLAY-PEER
-    updates:
-      wait_install: true
-  - name: HA2
-    router_id: 10.255.128.18
-    rd: 10.255.128.18:21
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - '21:21'
-      export:
-      - address_family: evpn
-        route_targets:
-        - '21:21'
-    redistribute_routes:
-    - source_protocol: connected
-    neighbors:
-    - ip_address: 10.255.129.124
-      peer_group: MLAG-IPv4-UNDERLAY-PEER
-    updates:
-      wait_install: true
-  - name: Prod1
-    router_id: 10.255.128.18
-    rd: 10.255.128.18:10
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - '10:10'
-      export:
-      - address_family: evpn
-        route_targets:
-        - '10:10'
-    redistribute_routes:
-    - source_protocol: connected
-    neighbors:
-    - ip_address: 10.255.129.124
-      peer_group: MLAG-IPv4-UNDERLAY-PEER
-    updates:
-      wait_install: true
-  - name: Prod2
-    router_id: 10.255.128.18
-    rd: 10.255.128.18:11
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - '11:11'
-      export:
-      - address_family: evpn
-        route_targets:
-        - '11:11'
-    redistribute_routes:
-    - source_protocol: connected
-    neighbors:
-    - ip_address: 10.255.129.124
-      peer_group: MLAG-IPv4-UNDERLAY-PEER
-    updates:
-      wait_install: true
-  vlans:
-  - id: 201
-    tenant: HA
-    rd: 10.255.128.18:20201
-    route_targets:
-      both:
-      - 20201:20201
-    redistribute_routes:
-    - learned
-  - id: 202
-    tenant: HA
-    rd: 10.255.128.18:20202
-    route_targets:
-      both:
-      - 20202:20202
-    redistribute_routes:
-    - learned
-  - id: 211
-    tenant: HA
-    rd: 10.255.128.18:20211
-    route_targets:
-      both:
-      - 20211:20211
-    redistribute_routes:
-    - learned
-  - id: 212
-    tenant: HA
-    rd: 10.255.128.18:20212
-    route_targets:
-      both:
-      - 20212:20212
-    redistribute_routes:
-    - learned
-  - id: 3401
-    tenant: HA
-    rd: 10.255.128.18:23401
-    route_targets:
-      both:
-      - 23401:23401
-    redistribute_routes:
-    - learned
-  - id: 3402
-    tenant: HA
-    rd: 10.255.128.18:23402
-    route_targets:
-      both:
-      - 23402:23402
-    redistribute_routes:
-    - learned
-  - id: 101
-    tenant: Prod
-    rd: 10.255.128.18:10101
-    route_targets:
-      both:
-      - 10101:10101
-    redistribute_routes:
-    - learned
-  - id: 102
-    tenant: Prod
-    rd: 10.255.128.18:10102
-    route_targets:
-      both:
-      - 10102:10102
-    redistribute_routes:
-    - learned
-  - id: 111
-    tenant: Prod
-    rd: 10.255.128.18:10111
-    route_targets:
-      both:
-      - 10111:10111
-    redistribute_routes:
-    - learned
-  - id: 112
-    tenant: Prod
-    rd: 10.255.128.18:10112
-    route_targets:
-      both:
-      - 10112:10112
-    redistribute_routes:
-    - learned
+  neighbors:
+  - ip_address: 172.100.100.2
+    remote_as: '65102'
+    description: dc1-dci2
+    peer_group: IPv4-UNDERLAY-PEERS
+    local_as: '65202'
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -238,11 +56,7 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 spanning_tree:
-  mode: mstp
-  mst_instances:
-  - id: '0'
-    priority: 4096
-  no_spanning_tree_vlan: 4093-4094
+  mode: none
 local_users:
 - name: admin
   privilege: 15
@@ -255,18 +69,6 @@ local_users:
 vrfs:
 - name: MGMT
   ip_routing: false
-- name: HA1
-  tenant: HA
-  ip_routing: true
-- name: HA2
-  tenant: HA
-  ip_routing: true
-- name: Prod1
-  tenant: Prod
-  ip_routing: true
-- name: Prod2
-  tenant: Prod
-  ip_routing: true
 management_interfaces:
 - name: Management1
   description: oob_management
@@ -280,313 +82,35 @@ management_api_http:
   - name: MGMT
   enable_https: true
 eos_cli: "interface Management1\n   no lldp receive\n   no lldp transmit\n"
-vlans:
-- id: 4093
-  tenant: system
-  name: LEAF_PEER_L3
-  trunk_groups:
-  - LEAF_PEER_L3
-- id: 4094
-  tenant: system
-  name: MLAG_PEER
-  trunk_groups:
-  - MLAG
-- id: 201
-  name: HA1-201
-  tenant: HA
-- id: 202
-  name: HA1-202
-  tenant: HA
-- id: 3019
-  name: MLAG_iBGP_HA1
-  trunk_groups:
-  - LEAF_PEER_L3
-  tenant: HA
-- id: 211
-  name: HA2-211
-  tenant: HA
-- id: 212
-  name: HA2-212
-  tenant: HA
-- id: 3020
-  name: MLAG_iBGP_HA2
-  trunk_groups:
-  - LEAF_PEER_L3
-  tenant: HA
-- id: 3401
-  name: L2_VLAN3401
-  tenant: HA
-- id: 3402
-  name: L2_VLAN3402
-  tenant: HA
-- id: 101
-  name: Prod1-101
-  tenant: Prod
-- id: 102
-  name: Prod1-102
-  tenant: Prod
-- id: 3009
-  name: MLAG_iBGP_Prod1
-  trunk_groups:
-  - LEAF_PEER_L3
-  tenant: Prod
-- id: 111
-  name: Prod2-111
-  tenant: Prod
-- id: 112
-  name: Prod2-112
-  tenant: Prod
-- id: 3010
-  name: MLAG_iBGP_Prod2
-  trunk_groups:
-  - LEAF_PEER_L3
-  tenant: Prod
-vlan_interfaces:
-- name: Vlan4093
-  description: MLAG_PEER_L3_PEERING
+loopback_interfaces:
+- name: Loopback0
+  description: EVPN_Overlay_Peering
   shutdown: false
-  mtu: 1500
-  ip_address: 10.255.129.125/31
-- name: Vlan4094
-  description: MLAG_PEER
-  shutdown: false
-  ip_address: 10.255.129.93/31
-  no_autostate: true
-  mtu: 1500
-- name: Vlan201
-  tenant: HA
-  description: HA1-201
-  shutdown: false
-  ip_address_virtual: 10.0.101.1/24
-  vrf: HA1
-- name: Vlan202
-  tenant: HA
-  description: HA1-202
-  shutdown: false
-  ip_address_virtual: 10.0.102.1/24
-  vrf: HA1
-- name: Vlan3019
-  tenant: HA
-  type: underlay_peering
-  shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf HA1'
-  vrf: HA1
-  mtu: 1500
-  ip_address: 10.255.129.125/31
-- name: Vlan211
-  tenant: HA
-  description: HA2-211
-  shutdown: false
-  ip_address_virtual: 10.0.111.1/24
-  vrf: HA2
-- name: Vlan212
-  tenant: HA
-  description: HA2-212
-  shutdown: false
-  ip_address_virtual: 10.0.112.1/24
-  vrf: HA2
-- name: Vlan3020
-  tenant: HA
-  type: underlay_peering
-  shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf HA2'
-  vrf: HA2
-  mtu: 1500
-  ip_address: 10.255.129.125/31
-- name: Vlan101
-  tenant: Prod
-  description: Prod1-101
-  shutdown: false
-  ip_address_virtual: 10.0.101.1/24
-  vrf: Prod1
-- name: Vlan102
-  tenant: Prod
-  description: Prod1-102
-  shutdown: false
-  ip_address_virtual: 10.0.102.1/24
-  vrf: Prod1
-- name: Vlan3009
-  tenant: Prod
-  type: underlay_peering
-  shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf Prod1'
-  vrf: Prod1
-  mtu: 1500
-  ip_address: 10.255.129.125/31
-- name: Vlan111
-  tenant: Prod
-  description: Prod2-111
-  shutdown: false
-  ip_address_virtual: 10.0.111.1/24
-  vrf: Prod2
-- name: Vlan112
-  tenant: Prod
-  description: Prod2-112
-  shutdown: false
-  ip_address_virtual: 10.0.112.1/24
-  vrf: Prod2
-- name: Vlan3010
-  tenant: Prod
-  type: underlay_peering
-  shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf Prod2'
-  vrf: Prod2
-  mtu: 1500
-  ip_address: 10.255.129.125/31
-port_channel_interfaces:
-- name: Port-Channel3
-  description: MLAG_PEER_dc2-dci1_Po3
-  type: switched
-  shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
-ethernet_interfaces:
-- name: Ethernet3
-  peer: dc2-dci1
-  peer_interface: Ethernet3
-  peer_type: mlag_peer
-  description: MLAG_PEER_dc2-dci1_Ethernet3
-  type: port-channel-member
-  shutdown: false
-  channel_group:
-    id: 3
-    mode: active
-- name: Ethernet4
-  peer: dc2-dci1
-  peer_interface: Ethernet4
-  peer_type: mlag_peer
-  description: MLAG_PEER_dc2-dci1_Ethernet4
-  type: port-channel-member
-  shutdown: false
-  channel_group:
-    id: 3
-    mode: active
-- name: Ethernet1
-  peer: dc2-spine1
-  peer_interface: Ethernet6
-  peer_type: spine
-  description: P2P_LINK_TO_DC2-SPINE1_Ethernet6
-  shutdown: false
-  mtu: 1500
-  type: routed
-  ip_address: 10.255.255.125/31
-- name: Ethernet2
-  peer: dc2-spine2
-  peer_interface: Ethernet6
-  peer_type: spine
-  description: P2P_LINK_TO_DC2-SPINE2_Ethernet6
-  shutdown: false
-  mtu: 1500
-  type: routed
-  ip_address: 10.255.255.127/31
-mlag_configuration:
-  domain_id: DC2_DCI
-  local_interface: Vlan4094
-  peer_address: 10.255.129.92
-  peer_link: Port-Channel3
-route_maps:
-- name: RM-MLAG-PEER-IN
+  ip_address: 10.255.128.18/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
   - sequence: 10
-    type: permit
-    set:
-    - origin incomplete
-    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
+    action: permit 10.255.128.0/27 eq 32
+route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
   - sequence: 10
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-loopback_interfaces:
-- name: Loopback0
-  description: EVPN_Overlay_Peering
-  shutdown: false
-  ip_address: 10.255.128.18/32
-- name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
-  shutdown: false
-  ip_address: 10.255.129.17/32
-- name: Loopback20
-  description: HA1_VTEP_DIAGNOSTICS
-  shutdown: false
-  vrf: HA1
-  ip_address: 10.255.14.18/32
-- name: Loopback21
-  description: HA2_VTEP_DIAGNOSTICS
-  shutdown: false
-  vrf: HA2
-  ip_address: 10.255.15.18/32
-- name: Loopback10
-  description: Prod1_VTEP_DIAGNOSTICS
-  shutdown: false
-  vrf: Prod1
-  ip_address: 10.255.12.18/32
-- name: Loopback11
-  description: Prod2_VTEP_DIAGNOSTICS
-  shutdown: false
-  vrf: Prod2
-  ip_address: 10.255.13.18/32
-prefix_lists:
-- name: PL-LOOPBACKS-EVPN-OVERLAY
-  sequence_numbers:
-  - sequence: 10
-    action: permit 10.255.128.0/27 eq 32
-  - sequence: 20
-    action: permit 10.255.129.0/27 eq 32
 router_bfd:
   multihop:
     interval: 300
     min_rx: 300
     multiplier: 3
-ip_igmp_snooping:
-  globally_enabled: true
-ip_virtual_router_mac_address: 00:1c:73:00:00:99
-vxlan_interface:
-  Vxlan1:
-    description: dc2-dci2_VTEP
-    vxlan:
-      udp_port: 4789
-      source_interface: Loopback1
-      virtual_router_encapsulation_mac_address: mlag-system-id
-      vlans:
-      - id: 201
-        vni: 20201
-      - id: 202
-        vni: 20202
-      - id: 211
-        vni: 20211
-      - id: 212
-        vni: 20212
-      - id: 3401
-        vni: 23401
-      - id: 3402
-        vni: 23402
-      - id: 101
-        vni: 10101
-      - id: 102
-        vni: 10102
-      - id: 111
-        vni: 10111
-      - id: 112
-        vni: 10112
-      vrfs:
-      - name: HA1
-        vni: 20
-      - name: HA2
-        vni: 21
-      - name: Prod1
-        vni: 10
-      - name: Prod2
-        vni: 11
-virtual_source_nat_vrfs:
-- name: HA1
-  ip_address: 10.255.14.18
-- name: HA2
-  ip_address: 10.255.15.18
-- name: Prod1
-  ip_address: 10.255.12.18
-- name: Prod2
-  ip_address: 10.255.13.18
+ethernet_interfaces:
+- name: Ethernet7
+  peer: dc1-dci2
+  peer_interface: Ethernet7
+  peer_type: overlay-controller
+  description: P2P_LINK_TO_dc1-dci2_Ethernet7
+  type: routed
+  shutdown: false
+  mtu: 1500
+  ip_address: 172.100.100.3/31

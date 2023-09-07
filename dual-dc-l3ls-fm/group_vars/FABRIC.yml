@@ -91,6 +91,10 @@ l3_edge:
       nodes: [dc1-dci1, dc2-dci1]
       interfaces: [Ethernet6, Ethernet6]
       profile: DCI_profile
+    - id: 2
+      nodes: [dc1-dci2, dc2-dci2]
+      interfaces: [Ethernet7, Ethernet7]
+      profile: DCI_profile
     #- id: 2
     #  nodes: [dc1-leaf2b, dc2-leaf2b]
     #  interfaces: [Ethernet6, Ethernet6]

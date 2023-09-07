@@ -1,4 +1,4 @@
 ---
-### group_vars/DC1_L3_LEAVES.yml
+### group_vars/DC2_DCI.yml
 
-type: l3leaf
+type: overlay-controller
