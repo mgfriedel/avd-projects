@@ -72,6 +72,11 @@ default_interfaces:
   - types: [ l2leaf ]
     platforms: [ vEOS-lab ]
     uplink_interfaces: [ Ethernet1-2 ]
+  - types: [ overlay-controller ]
+    platforms: [ vEOS-lab ]
+    uplink_interfaces: [ Ethernet1-8 ]
+    #mlag_interfaces: [ Ethernet3-4 ]
+    downlink_interfaces: [ Ethernet8, Ethernet8 ]
 
 # L3 Edge port definitions. This can be any port in the entire Fabric, where IP interfaces are defined.
 l3_edge:

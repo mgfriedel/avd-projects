@@ -51,6 +51,14 @@ router_bgp:
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'
     description: dc1-leaf2b_Ethernet2
+  - ip_address: 10.255.255.19
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65111'
+    description: dc1-dci1_Ethernet2
+  - ip_address: 10.255.255.23
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65111'
+    description: dc1-dci2_Ethernet2
   - ip_address: 10.255.0.3
     peer_group: EVPN-OVERLAY-PEERS
     description: dc1-leaf1a
@@ -146,6 +154,24 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.255.255.14/31
+- name: Ethernet5
+  peer: dc1-dci1
+  peer_interface: Ethernet2
+  peer_type: overlay-controller
+  description: P2P_LINK_TO_DC1-DCI1_Ethernet2
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.255.255.18/31
+- name: Ethernet6
+  peer: dc1-dci2
+  peer_interface: Ethernet2
+  peer_type: overlay-controller
+  description: P2P_LINK_TO_DC1-DCI2_Ethernet2
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.255.255.22/31
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

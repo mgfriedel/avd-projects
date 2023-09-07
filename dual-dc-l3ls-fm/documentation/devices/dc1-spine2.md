@@ -155,6 +155,8 @@ vlan internal order ascending range 1006 1199
 | Ethernet2 | P2P_LINK_TO_DC1-LEAF1B_Ethernet2 | routed | - | 10.255.255.6/31 | default | 1500 | False | - | - |
 | Ethernet3 | P2P_LINK_TO_DC1-LEAF2A_Ethernet2 | routed | - | 10.255.255.10/31 | default | 1500 | False | - | - |
 | Ethernet4 | P2P_LINK_TO_DC1-LEAF2B_Ethernet2 | routed | - | 10.255.255.14/31 | default | 1500 | False | - | - |
+| Ethernet5 | P2P_LINK_TO_DC1-DCI1_Ethernet2 | routed | - | 10.255.255.18/31 | default | 1500 | False | - | - |
+| Ethernet6 | P2P_LINK_TO_DC1-DCI2_Ethernet2 | routed | - | 10.255.255.22/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -187,6 +189,20 @@ interface Ethernet4
    mtu 1500
    no switchport
    ip address 10.255.255.14/31
+!
+interface Ethernet5
+   description P2P_LINK_TO_DC1-DCI1_Ethernet2
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 10.255.255.18/31
+!
+interface Ethernet6
+   description P2P_LINK_TO_DC1-DCI2_Ethernet2
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 10.255.255.22/31
 ```
 
 ### Loopback Interfaces
@@ -316,6 +332,8 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 | 10.255.255.7 | 65101 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 | 10.255.255.11 | 65102 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 | 10.255.255.15 | 65102 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 10.255.255.19 | 65111 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 10.255.255.23 | 65111 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -370,6 +388,12 @@ router bgp 65100
    neighbor 10.255.255.15 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.255.255.15 remote-as 65102
    neighbor 10.255.255.15 description dc1-leaf2b_Ethernet2
+   neighbor 10.255.255.19 peer group IPv4-UNDERLAY-PEERS
+   neighbor 10.255.255.19 remote-as 65111
+   neighbor 10.255.255.19 description dc1-dci1_Ethernet2
+   neighbor 10.255.255.23 peer group IPv4-UNDERLAY-PEERS
+   neighbor 10.255.255.23 remote-as 65111
+   neighbor 10.255.255.23 description dc1-dci2_Ethernet2
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

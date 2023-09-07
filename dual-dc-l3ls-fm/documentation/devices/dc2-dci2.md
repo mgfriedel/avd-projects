@@ -151,11 +151,27 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_DC2-SPINE1_Ethernet6 | routed | - | 10.255.255.125/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC2-SPINE2_Ethernet6 | routed | - | 10.255.255.127/31 | default | 1500 | False | - | - |
 | Ethernet7 | P2P_LINK_TO_dc1-dci2_Ethernet7 | routed | - | 172.100.100.3/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
+!
+interface Ethernet1
+   description P2P_LINK_TO_DC2-SPINE1_Ethernet6
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 10.255.255.125/31
+!
+interface Ethernet2
+   description P2P_LINK_TO_DC2-SPINE2_Ethernet6
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 10.255.255.127/31
 !
 interface Ethernet7
    description P2P_LINK_TO_dc1-dci2_Ethernet7
@@ -296,6 +312,8 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
 | 10.255.0.8 | 65111 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - |
+| 10.255.255.124 | 65200 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 10.255.255.126 | 65200 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 | 172.100.100.2 | 65102 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
@@ -345,6 +363,12 @@ router bgp 65112
    neighbor 10.255.0.8 peer group EVPN-OVERLAY-CORE
    neighbor 10.255.0.8 remote-as 65111
    neighbor 10.255.0.8 description dc1-dci2
+   neighbor 10.255.255.124 peer group IPv4-UNDERLAY-PEERS
+   neighbor 10.255.255.124 remote-as 65200
+   neighbor 10.255.255.124 description dc2-spine1_Ethernet6
+   neighbor 10.255.255.126 peer group IPv4-UNDERLAY-PEERS
+   neighbor 10.255.255.126 remote-as 65200
+   neighbor 10.255.255.126 description dc2-spine2_Ethernet6
    neighbor 172.100.100.2 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.100.100.2 remote-as 65102
    neighbor 172.100.100.2 local-as 65202 no-prepend replace-as

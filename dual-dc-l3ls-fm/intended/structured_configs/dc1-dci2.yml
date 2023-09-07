@@ -43,6 +43,24 @@ router_bgp:
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
+  neighbors:
+  - ip_address: 10.255.255.20
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65100'
+    description: dc1-spine1_Ethernet6
+  - ip_address: 10.255.255.22
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65100'
+    description: dc1-spine2_Ethernet6
+  - ip_address: 10.255.128.17
+    peer_group: EVPN-OVERLAY-CORE
+    description: dc2-dci1
+    remote_as: '65112'
+  - ip_address: 172.100.100.3
+    remote_as: '65202'
+    description: dc2-dci2
+    peer_group: IPv4-UNDERLAY-PEERS
+    local_as: '65102'
   address_family_evpn:
     neighbor_default:
       next_hop_self_received_evpn_routes:
@@ -54,16 +72,6 @@ router_bgp:
     - name: EVPN-OVERLAY-CORE
       domain_remote: true
       activate: true
-  neighbors:
-  - ip_address: 10.255.128.17
-    peer_group: EVPN-OVERLAY-CORE
-    description: dc2-dci1
-    remote_as: '65112'
-  - ip_address: 172.100.100.3
-    remote_as: '65202'
-    description: dc2-dci2
-    peer_group: IPv4-UNDERLAY-PEERS
-    local_as: '65102'
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -102,6 +110,34 @@ management_api_http:
   - name: MGMT
   enable_https: true
 eos_cli: "interface Management1\n   no lldp receive\n   no lldp transmit\n"
+ethernet_interfaces:
+- name: Ethernet1
+  peer: dc1-spine1
+  peer_interface: Ethernet6
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE1_Ethernet6
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.255.255.21/31
+- name: Ethernet2
+  peer: dc1-spine2
+  peer_interface: Ethernet6
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE2_Ethernet6
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.255.255.23/31
+- name: Ethernet7
+  peer: dc2-dci2
+  peer_interface: Ethernet7
+  peer_type: overlay-controller
+  description: P2P_LINK_TO_dc2-dci2_Ethernet7
+  type: routed
+  shutdown: false
+  mtu: 1500
+  ip_address: 172.100.100.2/31
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
@@ -124,13 +160,3 @@ router_bfd:
     interval: 300
     min_rx: 300
     multiplier: 3
-ethernet_interfaces:
-- name: Ethernet7
-  peer: dc2-dci2
-  peer_interface: Ethernet7
-  peer_type: overlay-controller
-  description: P2P_LINK_TO_dc2-dci2_Ethernet7
-  type: routed
-  shutdown: false
-  mtu: 1500
-  ip_address: 172.100.100.2/31
