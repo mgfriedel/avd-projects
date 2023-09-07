@@ -38,6 +38,7 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+eos_cli: "interface Management1\n   no lldp receive\n   no lldp transmit\n"
 ethernet_interfaces:
 - name: Ethernet1
   peer: dc1-leaf1a
@@ -75,25 +76,37 @@ port_channel_interfaces:
   type: switched
   shutdown: false
   mode: trunk
-  vlans: 11-12,21-22,3401-3402
+  vlans: 101-102,111-112,201-202,211-212,3401-3402
 vlans:
-- id: 11
-  name: VRF10_VLAN11
-  tenant: TENANT1
-- id: 12
-  name: VRF10_VLAN12
-  tenant: TENANT1
-- id: 21
-  name: VRF11_VLAN21
-  tenant: TENANT1
-- id: 22
-  name: VRF11_VLAN22
-  tenant: TENANT1
+- id: 201
+  name: HA1-201
+  tenant: HA
+- id: 202
+  name: HA1-202
+  tenant: HA
+- id: 211
+  name: HA2-211
+  tenant: HA
+- id: 212
+  name: HA2-212
+  tenant: HA
 - id: 3401
   name: L2_VLAN3401
-  tenant: TENANT1
+  tenant: HA
 - id: 3402
   name: L2_VLAN3402
-  tenant: TENANT1
+  tenant: HA
+- id: 101
+  name: Prod1-101
+  tenant: Prod
+- id: 102
+  name: Prod1-102
+  tenant: Prod
+- id: 111
+  name: Prod2-111
+  tenant: Prod
+- id: 112
+  name: Prod2-112
+  tenant: Prod
 ip_igmp_snooping:
   globally_enabled: true

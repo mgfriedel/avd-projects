@@ -29,6 +29,7 @@
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
+- [EOS CLI](#eos-cli)
 
 ## Management
 
@@ -145,10 +146,14 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 11 | VRF10_VLAN11 | - |
-| 12 | VRF10_VLAN12 | - |
-| 21 | VRF11_VLAN21 | - |
-| 22 | VRF11_VLAN22 | - |
+| 101 | Prod1-101 | - |
+| 102 | Prod1-102 | - |
+| 111 | Prod2-111 | - |
+| 112 | Prod2-112 | - |
+| 201 | HA1-201 | - |
+| 202 | HA1-202 | - |
+| 211 | HA2-211 | - |
+| 212 | HA2-212 | - |
 | 3401 | L2_VLAN3401 | - |
 | 3402 | L2_VLAN3402 | - |
 
@@ -156,17 +161,29 @@ vlan internal order ascending range 1006 1199
 
 ```eos
 !
-vlan 11
-   name VRF10_VLAN11
+vlan 101
+   name Prod1-101
 !
-vlan 12
-   name VRF10_VLAN12
+vlan 102
+   name Prod1-102
 !
-vlan 21
-   name VRF11_VLAN21
+vlan 111
+   name Prod2-111
 !
-vlan 22
-   name VRF11_VLAN22
+vlan 112
+   name Prod2-112
+!
+vlan 201
+   name HA1-201
+!
+vlan 202
+   name HA1-202
+!
+vlan 211
+   name HA2-211
+!
+vlan 212
+   name HA2-212
 !
 vlan 3401
    name L2_VLAN3401
@@ -185,8 +202,8 @@ vlan 3402
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | DC2-LEAF1A_Ethernet8 | *trunk | *11-12,21-22,3401-3402 | *- | *- | 1 |
-| Ethernet2 | DC2-LEAF1B_Ethernet8 | *trunk | *11-12,21-22,3401-3402 | *- | *- | 1 |
+| Ethernet1 | DC2-LEAF1A_Ethernet8 | *trunk | *101-102,111-112,201-202,211-212,3401-3402 | *- | *- | 1 |
+| Ethernet2 | DC2-LEAF1B_Ethernet8 | *trunk | *101-102,111-112,201-202,211-212,3401-3402 | *- | *- | 1 |
 | Ethernet5 |  dc2-leaf1-server1_iLO | access | 11 | - | - | - |
 
 *Inherited from Port-Channel Interface
@@ -222,7 +239,7 @@ interface Ethernet5
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC2_L3_LEAF1_Po8 | switched | trunk | 11-12,21-22,3401-3402 | - | - | - | - | - | - |
+| Port-Channel1 | DC2_L3_LEAF1_Po8 | switched | trunk | 101-102,111-112,201-202,211-212,3401-3402 | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -232,7 +249,7 @@ interface Port-Channel1
    description DC2_L3_LEAF1_Po8
    no shutdown
    switchport
-   switchport trunk allowed vlan 11-12,21-22,3401-3402
+   switchport trunk allowed vlan 101-102,111-112,201-202,211-212,3401-3402
    switchport mode trunk
 ```
 
@@ -314,4 +331,14 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 ```eos
 !
 vrf instance MGMT
+```
+
+## EOS CLI
+
+```eos
+!
+interface Management1
+   no lldp receive
+   no lldp transmit
+
 ```

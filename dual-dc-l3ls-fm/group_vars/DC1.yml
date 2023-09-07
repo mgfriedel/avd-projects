@@ -59,6 +59,21 @@ l3leaf:
   node_groups:
     # Definition of a node group that will include two devices in MLAG.
     # Definitions under the group will be inherited by both nodes in the group
+    - group: DC1_DCI
+      bgp_as: 65111
+      nodes:
+        - name: dc1-dci1
+          id: 5
+          mgmt_ip: 172.16.1.105/24
+          uplink_switch_interfaces:
+            - Ethernet5
+            - Ethernet5
+        - name: dc1-dci2
+          id: 6
+          mgmt_ip: 172.16.1.106/24
+          uplink_switch_interfaces:
+            - Ethernet6
+            - Ethernet6
     - group: DC1_L3_LEAF1
       # ASN to be used by BGP for the group. Both devices in the MLAG pair will use the same BGP ASN
       bgp_as: 65101

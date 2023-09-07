@@ -8,6 +8,8 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  updates:
+    wait_install: true
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -67,7 +69,45 @@ router_bgp:
     - name: EVPN-OVERLAY-PEERS
       activate: true
   vrfs:
-  - name: VRF10
+  - name: HA1
+    router_id: 10.255.0.4
+    rd: 10.255.0.4:20
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '20:20'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '20:20'
+    redistribute_routes:
+    - source_protocol: connected
+    neighbors:
+    - ip_address: 10.255.1.96
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
+  - name: HA2
+    router_id: 10.255.0.4
+    rd: 10.255.0.4:21
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '21:21'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '21:21'
+    redistribute_routes:
+    - source_protocol: connected
+    neighbors:
+    - ip_address: 10.255.1.96
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
+  - name: Prod1
     router_id: 10.255.0.4
     rd: 10.255.0.4:10
     route_targets:
@@ -84,7 +124,9 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.1.96
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-  - name: VRF11
+    updates:
+      wait_install: true
+  - name: Prod2
     router_id: 10.255.0.4
     rd: 10.255.0.4:11
     route_targets:
@@ -101,53 +143,87 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.1.96
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   vlans:
-  - id: 11
-    tenant: TENANT1
-    rd: 10.255.0.4:10011
+  - id: 201
+    tenant: HA
+    rd: 10.255.0.4:20201
     route_targets:
       both:
-      - 10011:10011
+      - 20201:20201
     redistribute_routes:
     - learned
-  - id: 12
-    tenant: TENANT1
-    rd: 10.255.0.4:10012
+  - id: 202
+    tenant: HA
+    rd: 10.255.0.4:20202
     route_targets:
       both:
-      - 10012:10012
+      - 20202:20202
     redistribute_routes:
     - learned
-  - id: 21
-    tenant: TENANT1
-    rd: 10.255.0.4:10021
+  - id: 211
+    tenant: HA
+    rd: 10.255.0.4:20211
     route_targets:
       both:
-      - 10021:10021
+      - 20211:20211
     redistribute_routes:
     - learned
-  - id: 22
-    tenant: TENANT1
-    rd: 10.255.0.4:10022
+  - id: 212
+    tenant: HA
+    rd: 10.255.0.4:20212
     route_targets:
       both:
-      - 10022:10022
+      - 20212:20212
     redistribute_routes:
     - learned
   - id: 3401
-    tenant: TENANT1
-    rd: 10.255.0.4:13401
+    tenant: HA
+    rd: 10.255.0.4:23401
     route_targets:
       both:
-      - 13401:13401
+      - 23401:23401
     redistribute_routes:
     - learned
   - id: 3402
-    tenant: TENANT1
-    rd: 10.255.0.4:13402
+    tenant: HA
+    rd: 10.255.0.4:23402
     route_targets:
       both:
-      - 13402:13402
+      - 23402:23402
+    redistribute_routes:
+    - learned
+  - id: 101
+    tenant: Prod
+    rd: 10.255.0.4:10101
+    route_targets:
+      both:
+      - 10101:10101
+    redistribute_routes:
+    - learned
+  - id: 102
+    tenant: Prod
+    rd: 10.255.0.4:10102
+    route_targets:
+      both:
+      - 10102:10102
+    redistribute_routes:
+    - learned
+  - id: 111
+    tenant: Prod
+    rd: 10.255.0.4:10111
+    route_targets:
+      both:
+      - 10111:10111
+    redistribute_routes:
+    - learned
+  - id: 112
+    tenant: Prod
+    rd: 10.255.0.4:10112
+    route_targets:
+      both:
+      - 10112:10112
     redistribute_routes:
     - learned
 static_routes:
@@ -179,11 +255,17 @@ local_users:
 vrfs:
 - name: MGMT
   ip_routing: false
-- name: VRF10
-  tenant: TENANT1
+- name: HA1
+  tenant: HA
   ip_routing: true
-- name: VRF11
-  tenant: TENANT1
+- name: HA2
+  tenant: HA
+  ip_routing: true
+- name: Prod1
+  tenant: Prod
+  ip_routing: true
+- name: Prod2
+  tenant: Prod
   ip_routing: true
 management_interfaces:
 - name: Management1
@@ -197,6 +279,7 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+eos_cli: "interface Management1\n   no lldp receive\n   no lldp transmit\n"
 vlans:
 - id: 4093
   tenant: system
@@ -208,34 +291,56 @@ vlans:
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-- id: 11
-  name: VRF10_VLAN11
-  tenant: TENANT1
-- id: 12
-  name: VRF10_VLAN12
-  tenant: TENANT1
-- id: 3009
-  name: MLAG_iBGP_VRF10
+- id: 201
+  name: HA1-201
+  tenant: HA
+- id: 202
+  name: HA1-202
+  tenant: HA
+- id: 3019
+  name: MLAG_iBGP_HA1
   trunk_groups:
   - LEAF_PEER_L3
-  tenant: TENANT1
-- id: 21
-  name: VRF11_VLAN21
-  tenant: TENANT1
-- id: 22
-  name: VRF11_VLAN22
-  tenant: TENANT1
-- id: 3010
-  name: MLAG_iBGP_VRF11
+  tenant: HA
+- id: 211
+  name: HA2-211
+  tenant: HA
+- id: 212
+  name: HA2-212
+  tenant: HA
+- id: 3020
+  name: MLAG_iBGP_HA2
   trunk_groups:
   - LEAF_PEER_L3
-  tenant: TENANT1
+  tenant: HA
 - id: 3401
   name: L2_VLAN3401
-  tenant: TENANT1
+  tenant: HA
 - id: 3402
   name: L2_VLAN3402
-  tenant: TENANT1
+  tenant: HA
+- id: 101
+  name: Prod1-101
+  tenant: Prod
+- id: 102
+  name: Prod1-102
+  tenant: Prod
+- id: 3009
+  name: MLAG_iBGP_Prod1
+  trunk_groups:
+  - LEAF_PEER_L3
+  tenant: Prod
+- id: 111
+  name: Prod2-111
+  tenant: Prod
+- id: 112
+  name: Prod2-112
+  tenant: Prod
+- id: 3010
+  name: MLAG_iBGP_Prod2
+  trunk_groups:
+  - LEAF_PEER_L3
+  tenant: Prod
 vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
@@ -248,44 +353,84 @@ vlan_interfaces:
   ip_address: 10.255.1.65/31
   no_autostate: true
   mtu: 1500
-- name: Vlan11
-  tenant: TENANT1
-  description: VRF10_VLAN11
+- name: Vlan201
+  tenant: HA
+  description: HA1-201
   shutdown: false
-  ip_address_virtual: 10.10.11.1/24
-  vrf: VRF10
-- name: Vlan12
-  tenant: TENANT1
-  description: VRF10_VLAN12
+  ip_address_virtual: 10.0.101.1/24
+  vrf: HA1
+- name: Vlan202
+  tenant: HA
+  description: HA1-202
   shutdown: false
-  ip_address_virtual: 10.10.12.1/24
-  vrf: VRF10
-- name: Vlan3009
-  tenant: TENANT1
+  ip_address_virtual: 10.0.102.1/24
+  vrf: HA1
+- name: Vlan3019
+  tenant: HA
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf VRF10'
-  vrf: VRF10
+  description: 'MLAG_PEER_L3_iBGP: vrf HA1'
+  vrf: HA1
   mtu: 1500
   ip_address: 10.255.1.97/31
-- name: Vlan21
-  tenant: TENANT1
-  description: VRF11_VLAN21
+- name: Vlan211
+  tenant: HA
+  description: HA2-211
   shutdown: false
-  ip_address_virtual: 10.10.21.1/24
-  vrf: VRF11
-- name: Vlan22
-  tenant: TENANT1
-  description: VRF11_VLAN22
+  ip_address_virtual: 10.0.111.1/24
+  vrf: HA2
+- name: Vlan212
+  tenant: HA
+  description: HA2-212
   shutdown: false
-  ip_address_virtual: 10.10.22.1/24
-  vrf: VRF11
-- name: Vlan3010
-  tenant: TENANT1
+  ip_address_virtual: 10.0.112.1/24
+  vrf: HA2
+- name: Vlan3020
+  tenant: HA
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf VRF11'
-  vrf: VRF11
+  description: 'MLAG_PEER_L3_iBGP: vrf HA2'
+  vrf: HA2
+  mtu: 1500
+  ip_address: 10.255.1.97/31
+- name: Vlan101
+  tenant: Prod
+  description: Prod1-101
+  shutdown: false
+  ip_address_virtual: 10.0.101.1/24
+  vrf: Prod1
+- name: Vlan102
+  tenant: Prod
+  description: Prod1-102
+  shutdown: false
+  ip_address_virtual: 10.0.102.1/24
+  vrf: Prod1
+- name: Vlan3009
+  tenant: Prod
+  type: underlay_peering
+  shutdown: false
+  description: 'MLAG_PEER_L3_iBGP: vrf Prod1'
+  vrf: Prod1
+  mtu: 1500
+  ip_address: 10.255.1.97/31
+- name: Vlan111
+  tenant: Prod
+  description: Prod2-111
+  shutdown: false
+  ip_address_virtual: 10.0.111.1/24
+  vrf: Prod2
+- name: Vlan112
+  tenant: Prod
+  description: Prod2-112
+  shutdown: false
+  ip_address_virtual: 10.0.112.1/24
+  vrf: Prod2
+- name: Vlan3010
+  tenant: Prod
+  type: underlay_peering
+  shutdown: false
+  description: 'MLAG_PEER_L3_iBGP: vrf Prod2'
+  vrf: Prod2
   mtu: 1500
   ip_address: 10.255.1.97/31
 port_channel_interfaces:
@@ -302,7 +447,7 @@ port_channel_interfaces:
   type: switched
   shutdown: false
   mode: trunk
-  vlans: 11-12,21-22,3401-3402
+  vlans: 101-102,111-112,201-202,211-212,3401-3402
   mlag: 8
 - name: Port-Channel5
   description: dc1-leaf1-server1_PortChannel dc1-leaf1-server1
@@ -377,8 +522,6 @@ mlag_configuration:
   local_interface: Vlan4094
   peer_address: 10.255.1.64
   peer_link: Port-Channel3
-  reload_delay_mlag: '300'
-  reload_delay_non_mlag: '330'
 route_maps:
 - name: RM-MLAG-PEER-IN
   sequence_numbers:
@@ -402,16 +545,26 @@ loopback_interfaces:
   description: VTEP_VXLAN_Tunnel_Source
   shutdown: false
   ip_address: 10.255.1.3/32
+- name: Loopback20
+  description: HA1_VTEP_DIAGNOSTICS
+  shutdown: false
+  vrf: HA1
+  ip_address: 10.255.14.4/32
+- name: Loopback21
+  description: HA2_VTEP_DIAGNOSTICS
+  shutdown: false
+  vrf: HA2
+  ip_address: 10.255.15.4/32
 - name: Loopback10
-  description: VRF10_VTEP_DIAGNOSTICS
+  description: Prod1_VTEP_DIAGNOSTICS
   shutdown: false
-  vrf: VRF10
-  ip_address: 10.255.10.4/32
+  vrf: Prod1
+  ip_address: 10.255.12.4/32
 - name: Loopback11
-  description: VRF11_VTEP_DIAGNOSTICS
+  description: Prod2_VTEP_DIAGNOSTICS
   shutdown: false
-  vrf: VRF11
-  ip_address: 10.255.11.4/32
+  vrf: Prod2
+  ip_address: 10.255.13.4/32
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -435,25 +588,41 @@ vxlan_interface:
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
       vlans:
-      - id: 11
-        vni: 10011
-      - id: 12
-        vni: 10012
-      - id: 21
-        vni: 10021
-      - id: 22
-        vni: 10022
+      - id: 201
+        vni: 20201
+      - id: 202
+        vni: 20202
+      - id: 211
+        vni: 20211
+      - id: 212
+        vni: 20212
       - id: 3401
-        vni: 13401
+        vni: 23401
       - id: 3402
-        vni: 13402
+        vni: 23402
+      - id: 101
+        vni: 10101
+      - id: 102
+        vni: 10102
+      - id: 111
+        vni: 10111
+      - id: 112
+        vni: 10112
       vrfs:
-      - name: VRF10
+      - name: HA1
+        vni: 20
+      - name: HA2
+        vni: 21
+      - name: Prod1
         vni: 10
-      - name: VRF11
+      - name: Prod2
         vni: 11
 virtual_source_nat_vrfs:
-- name: VRF10
-  ip_address: 10.255.10.4
-- name: VRF11
-  ip_address: 10.255.11.4
+- name: HA1
+  ip_address: 10.255.14.4
+- name: HA2
+  ip_address: 10.255.15.4
+- name: Prod1
+  ip_address: 10.255.12.4
+- name: Prod2
+  ip_address: 10.255.13.4

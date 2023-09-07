@@ -24,7 +24,6 @@ spine:
       id: 11
       # Management IP to be assigned to the management interface
       mgmt_ip: 172.16.1.21/24
-
     - name: dc2-spine2
       id: 12
       mgmt_ip: 172.16.1.22/24
@@ -57,6 +56,21 @@ l3leaf:
 
   # If two nodes (and only two) are in the same node_group, they will automatically form an MLAG pair
   node_groups:
+    - group: DC2_DCI
+      bgp_as: 65112
+      nodes:
+        - name: dc2-dci1
+          id: 15
+          mgmt_ip: 172.16.1.115/24
+          uplink_switch_interfaces:
+            - Ethernet5
+            - Ethernet5
+        - name: dc2-dci2
+          id: 16
+          mgmt_ip: 172.16.1.116/24
+          uplink_switch_interfaces:
+            - Ethernet6
+            - Ethernet6
     # Definition of a node group that will include two devices in MLAG.
     # Definitions under the group will be inherited by both nodes in the group
     - group: DC2_L3_LEAF1
